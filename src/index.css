@@ -7,109 +7,120 @@
     --font-serif: 'Playfair Display', serif;
   }
 
-  /* Dark Theme: Dark Gray background, Yellow & Crimson accents */
+  /* DARK THEME: Dark Charcoal Gray (#18181b), Yellow (#f59e0b) & Crimson (#9f1239) */
   body.theme-dark {
-    background-color: #111827;
-    color: #e5e7eb;
-    --bg-main: #111827;
-    --bg-card: rgba(31, 41, 55, 0.85);
-    --bg-card-hover: rgba(55, 65, 81, 0.9);
-    --bg-modal: #1f2937;
-    --bg-header: rgba(17, 24, 39, 0.9);
+    background-color: #18181b; /* Dark Charcoal Gray */
+    color: #e4e4e7;
     
-    /* Primary: Vibrant Yellow / Gold */
-    --primary: #f59e0b;
+    --bg-page: #18181b;
+    --bg-card: #27272a;
+    --bg-card-hover: #3f3f46;
+    --bg-header: rgba(24, 24, 27, 0.9);
+    --bg-modal: #27272a;
+
+    --primary: #f59e0b; /* Yellow / Gold */
     --primary-hover: #d97706;
+    --primary-text: #000000;
     --primary-light: rgba(245, 158, 11, 0.15);
     --primary-glow: rgba(245, 158, 11, 0.35);
 
-    /* Secondary: Rich Crimson / Burgundy (زرشکی) */
-    --secondary: #be123c;
-    --secondary-hover: #9f1239;
-    --secondary-light: rgba(190, 18, 60, 0.15);
+    --secondary: #9f1239; /* Crimson / Burgundy - زرشکی */
+    --secondary-hover: #881337;
+    --secondary-text: #ffffff;
+    --secondary-light: rgba(159, 18, 57, 0.2);
 
-    --text-white: #f9fafb;
-    --text-body: #e5e7eb;
-    --text-muted: #9ca3af;
-    
-    --border-color: rgba(245, 158, 11, 0.25);
-    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(245, 158, 11, 0.3);
+    --border-subtle: #3f3f46;
+
+    --text-white: #ffffff;
+    --text-body: #e4e4e7;
+    --text-muted: #a1a1aa;
   }
 
-  /* Light Theme: White background, Sky Blue & Vibrant Red accents */
+  /* LIGHT THEME: Pure White (#ffffff), Sky Blue (#0ea5e9) & Red (#dc2626) */
   body.theme-light {
-    background-color: #ffffff;
-    color: #1f2937;
-    --bg-main: #ffffff;
-    --bg-card: rgba(255, 255, 255, 0.95);
-    --bg-card-hover: rgba(243, 244, 246, 1);
+    background-color: #ffffff; /* Pure White */
+    color: #18181b;
+    
+    --bg-page: #ffffff;
+    --bg-card: #f8fafc;
+    --bg-card-hover: #f1f5f9;
+    --bg-header: rgba(255, 255, 255, 0.95);
     --bg-modal: #ffffff;
-    --bg-header: rgba(255, 255, 255, 0.9);
-    
-    /* Primary: Sky Blue / Soft Cyan Blue (آبی آسمونی) */
-    --primary: #0284c7;
-    --primary-hover: #0369a1;
-    --primary-light: rgba(2, 132, 199, 0.12);
-    --primary-glow: rgba(2, 132, 199, 0.25);
 
-    /* Secondary: Vibrant Red (قرمز) */
-    --secondary: #ef4444;
-    --secondary-hover: #dc2626;
-    --secondary-light: rgba(239, 68, 68, 0.12);
-    
-    --text-white: #111827;
-    --text-body: #374151;
-    --text-muted: #6b7280;
-    
-    --border-color: rgba(2, 132, 199, 0.2);
-    --border-subtle: rgba(0, 0, 0, 0.08);
+    --primary: #0ea5e9; /* Sky Blue - آبی آسمونی */
+    --primary-hover: #0284c7;
+    --primary-text: #ffffff;
+    --primary-light: rgba(14, 165, 233, 0.12);
+    --primary-glow: rgba(14, 165, 233, 0.25);
+
+    --secondary: #dc2626; /* Vibrant Red - قرمز */
+    --secondary-hover: #b91c1c;
+    --secondary-text: #ffffff;
+    --secondary-light: rgba(220, 38, 38, 0.12);
+
+    --border-color: rgba(14, 165, 233, 0.25);
+    --border-subtle: #e2e8f0;
+
+    --text-white: #09090b;
+    --text-body: #27272a;
+    --text-muted: #64748b;
   }
 
   body {
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
-/* Glassmorphism Classes for Light & Dark */
+/* Dynamic Helper Utilities using CSS Variables */
+.bg-theme-page { background-color: var(--bg-page); }
+.bg-theme-card { background-color: var(--bg-card); }
+.bg-theme-modal { background-color: var(--bg-modal); }
+
+.bg-theme-primary { background-color: var(--primary); color: var(--primary-text); }
+.bg-theme-primary:hover { background-color: var(--primary-hover); }
+
+.bg-theme-secondary { background-color: var(--secondary); color: var(--secondary-text); }
+.bg-theme-secondary:hover { background-color: var(--secondary-hover); }
+
+.text-theme-primary { color: var(--primary); }
+.text-theme-secondary { color: var(--secondary); }
+.text-theme-main { color: var(--text-white); }
+.text-theme-body { color: var(--text-body); }
+.text-theme-muted { color: var(--text-muted); }
+
+.border-theme-primary { border-color: var(--primary); }
+.border-theme-secondary { border-color: var(--secondary); }
+.border-theme-subtle { border-color: var(--border-subtle); }
+
 .glass-panel {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
 .theme-dark .glass-panel {
-  background: rgba(17, 24, 39, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(39, 39, 42, 0.85);
+  border: 1px solid var(--border-subtle);
 }
 
 .theme-light .glass-panel {
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-subtle);
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
 }
 
-/* Scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.theme-dark ::-webkit-scrollbar-track {
-  background: #111827;
-}
-.theme-dark ::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 4px;
-}
+.theme-dark ::-webkit-scrollbar-track { background: #18181b; }
+.theme-dark ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
 
-.theme-light ::-webkit-scrollbar-track {
-  background: #f3f4f6;
-}
-.theme-light ::-webkit-scrollbar-thumb {
-  background: #9ca3af;
-  border-radius: 4px;
-}
+.theme-light ::-webkit-scrollbar-track { background: #f8fafc; }
+.theme-light ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-/* Animations */
 @keyframes spinSlow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
