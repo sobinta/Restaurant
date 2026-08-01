@@ -121,8 +121,8 @@ export const translations = {
     subName: "English Subtitle",
     tagline: "Tagline / Badge Text",
     themeMode: "Theme Palette Mode",
-    darkThemeLabel: "Dark Theme (Black / Gold / Dark Gray)",
-    lightThemeLabel: "Light Theme (White / Royal Blue / Crimson)",
+    darkThemeLabel: "Dark Theme (Dark Gray / Yellow / Crimson)",
+    lightThemeLabel: "Light Theme (White / Sky Blue / Red)",
     qrGenerator: "Generate Printable Table Standup QR Code",
 
     // User Profile
@@ -270,8 +270,8 @@ export const translations = {
     subName: "زیرعنوان انگلیسی",
     tagline: "شعار یا افتخارات رستوران",
     themeMode: "حالت رنگ‌بندی تم",
-    darkThemeLabel: "تم تاریک (مشکی / زرد طلایی / خاکستری تاریک)",
-    lightThemeLabel: "تم روشن (سفید / آبی سلطنتی / زرشکی)",
+    darkThemeLabel: "تم تاریک (خاکستری تیره / زرد / زرشکی)",
+    lightThemeLabel: "تم روشن (سفید / آبی آسمونی / قرمز)",
     qrGenerator: "ساخت پیش‌نمایش کد QR سر میز",
 
     // User Profile

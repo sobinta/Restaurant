@@ -7,52 +7,61 @@
     --font-serif: 'Playfair Display', serif;
   }
 
-  /* Default Dark Theme: Black, Yellow/Gold & Dark Gray */
+  /* Dark Theme: Dark Gray background, Yellow & Crimson accents */
   body.theme-dark {
-    background-color: #080c14;
-    color: #cbd5e1;
-    --bg-main: #080c14;
-    --bg-card: rgba(30, 41, 59, 0.75);
-    --bg-card-hover: rgba(51, 65, 85, 0.85);
-    --bg-modal: #0f172a;
-    --bg-header: rgba(15, 23, 42, 0.85);
+    background-color: #111827;
+    color: #e5e7eb;
+    --bg-main: #111827;
+    --bg-card: rgba(31, 41, 55, 0.85);
+    --bg-card-hover: rgba(55, 65, 81, 0.9);
+    --bg-modal: #1f2937;
+    --bg-header: rgba(17, 24, 39, 0.9);
     
+    /* Primary: Vibrant Yellow / Gold */
     --primary: #f59e0b;
     --primary-hover: #d97706;
     --primary-light: rgba(245, 158, 11, 0.15);
     --primary-glow: rgba(245, 158, 11, 0.35);
-    
-    --text-white: #f8fafc;
-    --text-body: #cbd5e1;
-    --text-muted: #94a3b8;
+
+    /* Secondary: Rich Crimson / Burgundy (زرشکی) */
+    --secondary: #be123c;
+    --secondary-hover: #9f1239;
+    --secondary-light: rgba(190, 18, 60, 0.15);
+
+    --text-white: #f9fafb;
+    --text-body: #e5e7eb;
+    --text-muted: #9ca3af;
     
     --border-color: rgba(245, 158, 11, 0.25);
     --border-subtle: rgba(255, 255, 255, 0.1);
   }
 
-  /* Light Theme: White, Deep Royal Blue & Crimson */
+  /* Light Theme: White background, Sky Blue & Vibrant Red accents */
   body.theme-light {
-    background-color: #f8fafc;
-    color: #334155;
-    --bg-main: #f8fafc;
-    --bg-card: rgba(255, 255, 255, 0.9);
-    --bg-card-hover: rgba(241, 245, 249, 1);
+    background-color: #ffffff;
+    color: #1f2937;
+    --bg-main: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-card-hover: rgba(243, 244, 246, 1);
     --bg-modal: #ffffff;
     --bg-header: rgba(255, 255, 255, 0.9);
     
-    --primary: #1e40af;
-    --primary-hover: #1d4ed8;
-    --primary-light: rgba(30, 64, 175, 0.1);
-    --primary-glow: rgba(30, 64, 175, 0.25);
+    /* Primary: Sky Blue / Soft Cyan Blue (آبی آسمونی) */
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --primary-light: rgba(2, 132, 199, 0.12);
+    --primary-glow: rgba(2, 132, 199, 0.25);
 
-    --accent-crimson: #be123c;
-    --accent-crimson-hover: #9f1239;
+    /* Secondary: Vibrant Red (قرمز) */
+    --secondary: #ef4444;
+    --secondary-hover: #dc2626;
+    --secondary-light: rgba(239, 68, 68, 0.12);
     
-    --text-white: #0f172a;
-    --text-body: #334155;
-    --text-muted: #64748b;
+    --text-white: #111827;
+    --text-body: #374151;
+    --text-muted: #6b7280;
     
-    --border-color: rgba(30, 64, 175, 0.2);
+    --border-color: rgba(2, 132, 199, 0.2);
     --border-subtle: rgba(0, 0, 0, 0.08);
   }
 
@@ -68,12 +77,12 @@
 }
 
 .theme-dark .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(17, 24, 39, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .theme-light .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
 }
@@ -85,18 +94,18 @@
 }
 
 .theme-dark ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #111827;
 }
 .theme-dark ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #374151;
   border-radius: 4px;
 }
 
 .theme-light ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f3f4f6;
 }
 .theme-light ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: #9ca3af;
   border-radius: 4px;
 }
 
