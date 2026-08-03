@@ -1,98 +1,92 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { RESTAURANT_PRESETS } from '../data/mockData';
+/* eslint-disable react/only-export-components */
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { translations } from '../data/translations';
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
+
+export const THEME_OPTIONS = [
+  { id: 'd1', family: 'dark', page: '#12130F', label: 'Obsidian · Saffron', colors: ['#12130F', '#3D422E', '#D7A84B'] },
+  { id: 'd2', family: 'dark', page: '#1D101B', label: 'Black Plum · Rose', colors: ['#1D101B', '#672F4F', '#DD8B72'] },
+  { id: 'd3', family: 'dark', page: '#091B17', label: 'Night Forest · Amber', colors: ['#091B17', '#24624E', '#D49A55'] },
+  { id: 'd4', family: 'dark', page: '#08111D', label: 'Midnight Ink · Champagne', colors: ['#08111D', '#274C67', '#D4BD87'] },
+  { id: 'l1', family: 'light', page: '#EEF0E7', label: 'Pearl · Sage', colors: ['#FBFCF6', '#DFE4CF', '#B87916'] },
+  { id: 'l2', family: 'light', page: '#F5EDEF', label: 'Oyster · Smoky Rose', colors: ['#FFF9F8', '#EAD9DF', '#B85063'] },
+  { id: 'l3', family: 'light', page: '#E8F0EC', label: 'Green Mist · Jade', colors: ['#F8FCFA', '#D4E6DF', '#BF6B2F'] },
+  { id: 'l4', family: 'light', page: '#E9EEF3', label: 'Ice · Steel Blue', colors: ['#F8FBFD', '#D6E0EB', '#923947'] },
+];
+
+const safeRead = (key, fallback) => {
+  try { return localStorage.getItem(key) || fallback; } catch { return fallback; }
+};
 
 export function ThemeProvider({ children }) {
-  const [lang, setLang] = useState('en'); // Default language is English (LTR)
-  const [themeMode, setThemeMode] = useState('dark'); // 'dark' or 'light'
-  
-  const [currentPreset, setCurrentPreset] = useState(RESTAURANT_PRESETS[0]);
+  const [lang, setLang] = useState(() => safeRead('arshida-language', 'de'));
+  const [themeId, setThemeIdState] = useState(() => safeRead('arshida-theme', 'd2'));
+  const [layoutMode, setLayoutModeState] = useState(() => safeRead('arshida-layout', 'cinematic'));
   const [branding, setBranding] = useState({
-    name: "Arshida Luxury Dining",
-    subName: "Fine Dining & Lounge",
-    tagline: "Unforgettable Culinary Mastery & Immersive Dining",
-    logoText: "ARSHIDA",
-    badge: "2025 Best Luxury Award Winner"
+    name: 'ARSHIDA',
+    subName: 'Contemporary Dining · Berlin',
+    tagline: '',
+    logoText: 'ARSHIDA',
+    badge: 'Chef’s Table Selection 2026',
   });
-  
-  const [presenterMode, setPresenterMode] = useState(true);
-  const [currency, setCurrency] = useState('$');
 
-  // Translation helper function
-  const t = (key) => {
-    return translations[lang]?.[key] || translations['en']?.[key] || key;
-  };
+  const isRtl = lang === 'fa' || lang === 'ar';
+  const theme = THEME_OPTIONS.find((item) => item.id === themeId) || THEME_OPTIONS[1];
+  const themeMode = theme.family;
 
-  // Sync html attributes on language or themeMode changes
   useEffect(() => {
-    const isRtl = lang === 'fa';
-    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
-    
-    // Update theme class on body
-    document.body.className = `theme-${themeMode} ${isRtl ? 'font-vazir' : 'font-sans'}`;
-    
-    // Update currency depending on lang
-    if (lang === 'fa') {
-      setCurrency('تومان');
-    } else {
-      setCurrency('$');
-    }
-  }, [lang, themeMode]);
+    const root = document.documentElement;
+    root.lang = lang;
+    root.dir = isRtl ? 'rtl' : 'ltr';
+    root.dataset.theme = themeId;
+    root.dataset.layout = layoutMode;
+    document.body.className = `theme-${themeMode} theme-${themeId} ${isRtl ? 'is-rtl' : 'is-ltr'}`;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.page);
+    try {
+      localStorage.setItem('arshida-language', lang);
+      localStorage.setItem('arshida-theme', themeId);
+      localStorage.setItem('arshida-layout', layoutMode);
+    } catch { /* Preferences remain session-only when storage is unavailable. */ }
+  }, [lang, themeId, layoutMode, themeMode, isRtl, theme.page]);
 
-  // When language changes, update default branding text if using default
-  const toggleLanguage = (newLang) => {
-    const selected = newLang || (lang === 'en' ? 'fa' : 'en');
-    setLang(selected);
-    if (selected === 'fa') {
-      setBranding({
-        name: "رستوران بین‌المللی آرشیدا",
-        subName: "Arshida Fine Dining & Lounge",
-        tagline: "تجربه‌ای ماندگار از طعم‌های شاهانه و فضایی مجلل",
-        logoText: "رستوران آرشیدا",
-        badge: "برنده تندیس برتر سال ۲۰۲۵"
-      });
-    } else {
-      setBranding({
-        name: "Arshida Luxury Dining",
-        subName: "Fine Dining & Lounge",
-        tagline: "Unforgettable Culinary Mastery & Immersive Dining",
-        logoText: "ARSHIDA",
-        badge: "2025 Best Luxury Award Winner"
-      });
-    }
+  const t = (key) => translations[lang]?.[key] ?? translations.en[key] ?? key;
+  const toggleLanguage = (next) => setLang(next || (lang === 'de' ? 'en' : 'de'));
+  const setThemeId = (next) => {
+    if (THEME_OPTIONS.some((item) => item.id === next)) setThemeIdState(next);
   };
-
   const toggleThemeMode = (mode) => {
-    const target = mode || (themeMode === 'dark' ? 'light' : 'dark');
-    setThemeMode(target);
+    if (mode === 'light') setThemeIdState('l2');
+    else if (mode === 'dark') setThemeIdState('d2');
+    else setThemeIdState(themeMode === 'dark' ? 'l2' : 'd2');
+  };
+  const setLayoutMode = (next) => {
+    if (next === 'cinematic' || next === 'editorial') setLayoutModeState(next);
   };
 
-  const updateBranding = (updatedFields) => {
-    setBranding(prev => ({ ...prev, ...updatedFields }));
+  const value = {
+    lang,
+    isRtl,
+    toggleLanguage,
+    themeId,
+    setThemeId,
+    themeMode,
+    toggleThemeMode,
+    themeOptions: THEME_OPTIONS,
+    layoutMode,
+    setLayoutMode,
+    t,
+    branding,
+    updateBranding: (fields) => setBranding((current) => ({ ...current, ...fields })),
+    currentPreset: null,
+    setCurrentPreset: () => {},
+    presenterMode: false,
+    setPresenterMode: () => {},
+    currency: '€',
+    setCurrency: () => {},
   };
 
-  return (
-    <ThemeContext.Provider value={{
-      lang,
-      toggleLanguage,
-      themeMode,
-      toggleThemeMode,
-      t,
-      currentPreset,
-      setCurrentPreset,
-      branding,
-      updateBranding,
-      presenterMode,
-      setPresenterMode,
-      currency,
-      setCurrency
-    }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

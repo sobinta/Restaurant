@@ -1,301 +1,51 @@
-// Internationalization (i18n) Dictionary for English (Default LTR) & Persian (RTL)
-
-export const translations = {
-  en: {
-    dir: "ltr",
-    fontFamily: "'Outfit', 'Inter', sans-serif",
-    
-    // Banner & Presenter
-    presenterBannerTitle: "Live Client Pitch Mode",
-    presenterBannerDesc: "You are presenting to a restaurant owner. All branding, logos, and colors change live instantly!",
-    whiteLabelSettings: "White-Label Branding",
-    
-    // Navbar
-    digitalMenu: "Digital Menu",
-    tableReservation360: "360° Table Reservation",
-    crmDashboard: "CRM Dashboard",
-    customizer: "Brand Customizer",
-    bookTable: "Book a Table",
-    cart: "Cart",
-    points: "Points",
-    
-    // Hero
-    heroBadge: "Next-Gen Intelligent Restaurant Platform 2026",
-    heroTitle: "Exceptional Culinary Craftsmanship & Immersive Dining",
-    heroSubtitle: "Select your favorite table on an interactive floor map, experience 360-degree virtual perspective views right from your seat before reserving, and place instant pickup, delivery, or table orders.",
-    heroRating: "4.9 Guest Rating",
-    hero360View: "360° Seat Views",
-    heroCrmIntegrated: "100% CRM Sync",
-    btnReserve360: "Book Table with 360° View",
-    btnViewMenu: "Explore Menu & Order",
-    preview360Badge: "Interactive 360° Table Visualizer",
-    clickToTest360: "Click to Test 360° Perspective View",
-    vipGlassRoom: "VIP Glass Lounge",
-    capacity: "Capacity",
-    guestsCount: "Guests",
-
-    // Menu
-    menuTitle: "Digital Culinary Menu",
-    menuSubtitle: "Handcrafted with locally sourced organic ingredients. Explore nutritional specs, calories, and allergen guides.",
-    searchPlaceholder: "Search dishes, starters, desserts...",
-    dietaryFilter: "Dietary:",
-    all: "All",
-    chefSpecial: "Chef's Special",
-    mainCourses: "Main Courses",
-    starters: "Starters & Salads",
-    desserts: "Desserts",
-    beverages: "Signature Drinks",
-    prepTime: "Prep Time",
-    calories: "Calories",
-    price: "Price",
-    addToCart: "Add to Order",
-    viewDetails: "View Specs",
-
-    // Dish Modal
-    customizeOrder: "Customize Your Order",
-    pairingSuggestion: "Sommelier Pairing Suggestion",
-    quantity: "Quantity",
-    confirmAdd: "Add to Order",
-
-    // 360 Viewer
-    view360Header: "360° Perspective View from Table",
-    dragHint: "Drag or swipe to rotate 360-degree perspective",
-    autoRotateOn: "↺ Auto-Rotate ON",
-    autoRotateOff: "▷ Auto-Rotate OFF",
-    viewAngle: "View Angle",
-    bookThisTable: "Book This Exact Table",
-    cancel: "Cancel",
-
-    // Floor Map & Reservation
-    floorMapTitle: "Interactive Floorplan Layout",
-    available: "Available",
-    reserved: "Reserved",
-    selected: "Selected",
-    mainHall: "Main Dining Lounge",
-    vipRoom: "VIP Glass Pavilion",
-    terrace: "Panorama Outdoor Terrace",
-    step1: "1. Date & Party",
-    step2: "2. 360° Seat Selection",
-    step3: "3. Guest Details",
-    step4: "4. Confirmation",
-    selectDate: "Select Date",
-    selectTime: "Select Time",
-    guestName: "Full Name",
-    guestPhone: "Phone Number",
-    specialRequests: "Special Requests / Allergies",
-    payDeposit: "Pay Deposit & Confirm Reservation",
-    bookingConfirmed: "Reservation Successfully Confirmed!",
-    bookingRef: "Booking Reference",
-
-    // Cart
-    shoppingCart: "Shopping Cart",
-    takeout: "Pickup",
-    delivery: "Delivery",
-    dineIn: "Dine-In QR",
-    deliveryAddress: "Delivery Address",
-    tableNumber: "Table Number",
-    applyCode: "Apply",
-    promoCodePlaceholder: "Promo code (e.g. VIP2026)",
-    subtotal: "Subtotal",
-    discount: "Discount",
-    deliveryFee: "Delivery Fee",
-    grandTotal: "Total Amount",
-    submitOrder: "Submit Kitchen Order",
-    emptyCart: "Your cart is currently empty",
-
-    // CRM
-    crmTitle: "Integrated Guest CRM & Intelligence",
-    crmSubtitle: "Analyze guest behavior, VIP tiers, dining history, and trigger targeted SMS campaigns.",
-    totalGuests: "Total Registered Guests",
-    avgBill: "Average Table Bill",
-    repeatRate: "VIP Retention Rate",
-    allergies: "Allergies & Medical Notes",
-    notes: "Service Notes & Waiter Tips",
-    sendCampaignSms: "Send Targeted Campaign SMS",
-    smsSentSuccess: "Campaign SMS successfully dispatched to guest!",
-
-    // White-Label Pitch Tool
-    whiteLabelTitle: "Live White-Label Customizer",
-    presets: "Branding Presets",
-    clientName: "Restaurant Client Name",
-    subName: "English Subtitle",
-    tagline: "Tagline / Badge Text",
-    themeMode: "Theme Palette Mode",
-    darkThemeLabel: "Dark Theme (Dark Gray / Yellow / Crimson)",
-    lightThemeLabel: "Light Theme (White / Sky Blue / Red)",
-    qrGenerator: "Generate Printable Table Standup QR Code",
-
-    // User Profile
-    userProfileTitle: "Customer Account & Loyalty",
-    loyaltyPoints: "Loyalty Balance",
-    pointsMsg: "Earn 10% points back on every reservation and online order.",
-    activeOrderTracker: "Live Active Order Progress",
-    statusReceived: "Received",
-    statusKitchen: "Cooking in Kitchen",
-    statusOnWay: "Out for Delivery",
-    statusDelivered: "Delivered",
-    bookingHistory: "Online Booking History",
-    redeemRewards: "Redeemable Rewards",
-
-    // Footer
-    contactInfo: "Contact & Operating Hours",
-    address: "148 Valiassr Ave, Tajrish, Tehran",
-    phone: "+98 21 22003344",
-    hours: "Open Daily: 12:00 PM - 11:45 PM",
-    quickLinks: "Quick Navigation",
-    newsletter: "VIP Newsletter Subscription",
-    newsletterDesc: "Subscribe to receive seasonal tasting menus and exclusive invitations.",
-    subscribe: "Subscribe",
-    subscribedSuccess: "✓ Successfully Subscribed!",
-    copyright: "All rights reserved. Engine for White-Label Restaurant Sales."
-  },
-
-  fa: {
-    dir: "rtl",
-    fontFamily: "'Vazirmatn', sans-serif",
-    
-    // Banner & Presenter
-    presenterBannerTitle: "حالت پرزنت زنده به مشتری",
-    presenterBannerDesc: "شما در حال پرزنت این سیستم به صاحب رستوران هستید. تمام رنگ‌ها، برند و لوگو قابل تغییر آنی است!",
-    whiteLabelSettings: "تنظیمات برند زنده (White-Label)",
-    
-    // Navbar
-    digitalMenu: "منوی دیجیتال",
-    tableReservation360: "رزرو آنلاین میز ۳۶۰°",
-    crmDashboard: "داشبورد CRM",
-    customizer: "سفارشی‌سازی برند",
-    bookTable: "رزرو میز",
-    cart: "سبد خرید",
-    points: "امتیاز",
-    
-    // Hero
-    heroBadge: "نسل جدید وب‌سایت‌های هوشمند رستورانی سال ۲۰۲۶",
-    heroTitle: "تجربه‌ای ماندگار از طعم‌های شاهانه و فضایی مجلل",
-    heroSubtitle: "امکان انتخاب میز مورد علاقه روی نقشه، تماشای ویوی ۳۶۰ درجه واقعی صندلی پیش از رزرو، سفارش مستقیم غذاهای بیرون‌بر و دلیوری، و اتصال مستقیم به سیستم مدیریت مشتریان CRM.",
-    heroRating: "۴.۹ رضایت مشتریان",
-    hero360View: "نمای ۳۶۰° صندلی‌ها",
-    heroCrmIntegrated: "۱۰۰٪ همگام با CRM",
-    btnReserve360: "رزرو میز با ویوی ۳۶۰ درجه",
-    btnViewMenu: "مشاهده منو & سفارش",
-    preview360Badge: "پیش‌نمایش تعاملی میز ۳۶۰°",
-    clickToTest360: "کلیک کنید: تست ویوی ۳۶۰ درجه",
-    vipGlassRoom: "سالن شیشه‌ای VIP",
-    capacity: "ظرفیت",
-    guestsCount: "نفر",
-
-    // Menu
-    menuTitle: "طعم‌های اصیل و منحصربه‌فرد",
-    menuSubtitle: "تمام مواد اولیه به صورت روزانه از بهترین مزارع محلی تهیه می‌شوند. می‌توانید جزئیات، میزان کالری و موارد آلرژی‌زا را مشاهده نمایید.",
-    searchPlaceholder: "جستجوی نام غذا، پیش‌غذا یا دسر...",
-    dietaryFilter: "فیلتر رژیمی:",
-    all: "همه موارد",
-    chefSpecial: "پیشنهاد سرآشپز",
-    mainCourses: "غذای اصلی",
-    starters: "پیش‌غذا & سالاد",
-    desserts: "دسر & عصرانه",
-    beverages: "نوشیدنی‌های بار",
-    prepTime: "زمان تهیه",
-    calories: "کالری",
-    price: "قیمت",
-    addToCart: "افزودن به سبد",
-    viewDetails: "مشاهده جزئیات",
-
-    // Dish Modal
-    customizeOrder: "شخصی‌سازی سفارش:",
-    pairingSuggestion: "پیشنهاد نوشیدنی مکمل:",
-    quantity: "تعداد",
-    confirmAdd: "افزودن به سبد خرید",
-
-    // 360 Viewer
-    view360Header: "دید ۳۶۰ درجه از صندلی میز",
-    dragHint: "برای چرخش کامل ۳۶۰ درجه کشیده و بچرخانید",
-    autoRotateOn: "↺ گردش خودکار فعال",
-    autoRotateOff: "▷ توقف گردش",
-    viewAngle: "زاویه دید",
-    bookThisTable: "رزرو همین میز",
-    cancel: "انصراف",
-
-    // Floor Map & Reservation
-    floorMapTitle: "نقشه چیدمان تعاملی سالن‌ها",
-    available: "آماده رزرو",
-    reserved: "رزرو شده",
-    selected: "انتخاب شده",
-    mainHall: "سالن اصلی (Main Lounge)",
-    vipRoom: "غرفه VIP و شیشه‌ای (VIP Glass Room)",
-    terrace: "تراس پانوراما و فضای باز (Outdoor Terrace)",
-    step1: "۱. زمان & تعداد",
-    step2: "۲. انتخاب میز ۳۶۰°",
-    step3: "۳. اطلاعات مهمان",
-    step4: "۴. تأیید فاکتور",
-    selectDate: "تاریخ رزرو",
-    selectTime: "ساعت حضور",
-    guestName: "نام و نام خانوادگی",
-    guestPhone: "شماره همراه",
-    specialRequests: "درخواست‌های خاص یا آلرژی‌های غذایی",
-    payDeposit: "پرداخت بیعانه & ثبت نهایی رزرو",
-    bookingConfirmed: "رزرو شما با موفقیت ثبت گردید!",
-    bookingRef: "کد پیگیری رزرو",
-
-    // Cart
-    shoppingCart: "سبد خرید سفارش آنلاین",
-    takeout: "تحویل حضوری",
-    delivery: "ارسال پیک",
-    dineIn: "سفارش سر میز",
-    deliveryAddress: "آدرس ارسال",
-    tableNumber: "شماره میز شما",
-    applyCode: "اعمال",
-    promoCodePlaceholder: "کد تخفیف (مثلا: VIP2026)",
-    subtotal: "جمع کل آیتم‌ها",
-    discount: "تخفیف",
-    deliveryFee: "هزینه ارسال",
-    grandTotal: "مبلغ قابل پرداخت",
-    submitOrder: "تأیید & ارسال سفارش به آشپزخانه",
-    emptyCart: "سبد خرید شما خالی است",
-
-    // CRM
-    crmTitle: "سیستم مدیریت مشتریان یکپارچه (CRM Dashboard)",
-    crmSubtitle: "تحلیل رفتاری مشتریان، دسته‌بندی VIP و اتوماسیون کمپین‌های پیامکی.",
-    totalGuests: "کل مشتریان ثبت‌شده",
-    avgBill: "میانگین فاکتور هر میز",
-    repeatRate: "نرخ بازگشت مشتریان VIP",
-    allergies: "آلرژی غذایی و ملاحظات پزشکی",
-    notes: "یادداشت اختصاصی گارسون & سیستم",
-    sendCampaignSms: "ارسال پیامک کمپین هدفمند",
-    smsSentSuccess: "پیامک کمپین با موفقیت به مشتری ارسال گردید!",
-
-    // White-Label Pitch Tool
-    whiteLabelTitle: "پنل سفارشی‌سازی زنده (White-Label)",
-    presets: "پریست‌های آماده برند",
-    clientName: "نام رستوران مشتری",
-    subName: "زیرعنوان انگلیسی",
-    tagline: "شعار یا افتخارات رستوران",
-    themeMode: "حالت رنگ‌بندی تم",
-    darkThemeLabel: "تم تاریک (خاکستری تیره / زرد / زرشکی)",
-    lightThemeLabel: "تم روشن (سفید / آبی آسمونی / قرمز)",
-    qrGenerator: "ساخت پیش‌نمایش کد QR سر میز",
-
-    // User Profile
-    userProfileTitle: "باشگاه مشتریان & پروفایل کاربری",
-    loyaltyPoints: "موجودی صندوق باشگاه مشتریان",
-    pointsMsg: "با هر ثبت رزرو یا سفارش آنلاین، ۱۰٪ مبلغ به صورت امتیاز هدیه شارژ می‌شود.",
-    activeOrderTracker: "پیگیری زنده آخرین سفارش",
-    statusReceived: "ثبت سفارش",
-    statusKitchen: "پخت در آشپزخانه",
-    statusOnWay: "تحویل به پیک",
-    statusDelivered: "تحویل شد",
-    bookingHistory: "تاریخچه رزروهای آنلاین میز",
-    redeemRewards: "جوایز قابل دریافت",
-
-    // Footer
-    contactInfo: "اطلاعات تماس & ساعات کاری",
-    address: "تهران، خیابان ولیعصر، نرسیده به تجریش، پلاک ۱۴۸",
-    phone: "۰۲۱-۲۲۰۰۳۳۴۴",
-    hours: "ساعات کاری: ۱۲:۰۰ الی ۲۳:۴۵ (همه روزه)",
-    quickLinks: "دسترسی سریع",
-    newsletter: "عضویت در خبرنامه تخفیف‌ها",
-    newsletterDesc: "با ثبت ایمیل خود، از پیشنهادات ویژه و جشنواره‌های فصلی مطلع شوید.",
-    subscribe: "عضویت در خبرنامه",
-    subscribedSuccess: "✓ با موفقیت عضو شدید!",
-    copyright: "تمام حقوق برای پلتفرم هوشمند رستورانی محفوظ است."
-  }
+const de = {
+  navMenu: 'Menü', navExperience: 'Erlebnis', navStories: 'Journal', navEvents: 'Abende', book: 'Tisch reservieren',
+  heroKicker: 'Contemporary dining · Berlin', heroTitle: 'Ein Abend, der in Erinnerung bleibt.', heroSubtitle: 'Präzise Küche, warme Gastlichkeit und Ihr Wunschplatz – schon vor der Reservierung erlebbar.',
+  heroEditorialKicker: 'Das saisonale Journal · Ausgabe 01', heroEditorialTitle: 'Ein Tisch. Tausend Geschichten.', heroEditorialSubtitle: 'Entdecken Sie die Menschen, Produkte und Ideen hinter dem neuen Menü von Arshida.',
+  reserveExperience: 'Erlebnis reservieren', exploreMenu: 'Menü entdecken', openTonight: 'Heute · 17:30–23:30', rating: '4,9 von Gästen', seatView: '360° Platzansicht', localProduce: 'Saisonal kuratiert',
+  appearance: 'Erscheinungsbild', siteLayout: 'Website-Vorlage', cinematic: 'Kinoerlebnis', editorial: 'Markenmagazin', darkThemes: 'Dunkle Themen', lightThemes: 'Helle Themen', close: 'Schließen',
+  menuEyebrow: 'Das aktuelle Menü', menuTitle: 'Komponiert für diesen Moment.', menuSubtitle: 'Saisonale Produkte, klare Aromen und feine persische Akzente.', search: 'Gericht suchen', noResults: 'Keine Gerichte gefunden.', all: 'Alle', add: 'Hinzufügen', details: 'Details', minutes: 'Min.', chefChoice: 'Signatur',
+  storyEyebrow: 'Herkunft & Handwerk', storyTitle: 'Modern in Berlin. Verwurzelt in Gastfreundschaft.', storyText: 'Arshida verbindet europäische Präzision mit der Wärme persischer Tafelkultur. Jede Zutat hat einen Ursprung, jeder Gang einen Rhythmus.', storyCta: 'Unsere Philosophie',
+  sourceOne: 'Safran aus Khorasan', sourceTwo: 'Gemüse aus Brandenburg', sourceThree: 'Handgefertigte Keramik',
+  reserveEyebrow: 'Ihr Platz im Raum', reserveTitle: 'Sehen, wählen, ankommen.', reserveText: 'Wählen Sie Ihren Tisch im Salon und erleben Sie die Perspektive vor Ihrer Reservierung.', openReservation: 'Tischplan öffnen', view360: '360° ansehen', available: 'Verfügbar', reserved: 'Reserviert', seats: 'Plätze',
+  eventsEyebrow: 'Besondere Abende', eventsTitle: 'Mehr als ein Dinner.', eventBook: 'Platz sichern',
+  newsletterTitle: 'Ein Brief aus der Küche.', newsletterText: 'Neue Menüs, besondere Abende und freie Chef’s-Counter-Plätze – ausgewählt, nicht täglich.', email: 'E-Mail-Adresse', subscribe: 'Eintragen', subscribed: 'Sie sind eingetragen.',
+  footerVisit: 'Besuch', footerAddress: 'Torstraße 148 · 10119 Berlin', footerHours: 'Di–So · 17:30–23:30', footerContact: '+49 30 884 21 90', restaurantLogin: 'Restaurant Login', legal: 'Impressum · Datenschutz',
+  cart: 'Bestellung', emptyCart: 'Ihre Bestellung ist noch leer.', subtotal: 'Zwischensumme', discount: 'Rabatt', total: 'Gesamt', promo: 'Aktionscode', apply: 'Einlösen', invalidPromo: 'Dieser Code ist nicht gültig. Prüfen Sie die Schreibweise.', checkout: 'Bestellung aufgeben', orderConfirmed: 'Bestellung wurde aufgegeben.',
+  profile: 'Ihr Besuch', loyalty: 'Treuepunkte', points: 'Punkte', orderStatus: 'Aktuelle Bestellung', inKitchen: 'Wird in der Küche zubereitet', bookings: 'Reservierungen', noBookings: 'Noch keine Reservierung vorhanden.',
+  dishAbout: 'Über diesen Gang', dietary: 'Hinweise', quantity: 'Anzahl', addToOrder: 'Zur Bestellung hinzufügen', halal: 'Halal', signature: 'Signatur', glutenFree: 'Glutenfrei', omega: 'Omega-3', vegetarian: 'Vegetarisch',
+  reservation: 'Reservierung', stepDate: 'Datum & Gäste', stepTable: 'Tisch wählen', stepDetails: 'Ihre Angaben', date: 'Datum', time: 'Uhrzeit', party: 'Personen', continue: 'Weiter', back: 'Zurück', name: 'Vollständiger Name', phone: 'Telefon', notes: 'Wünsche oder Allergien', confirm: 'Reservierung bestätigen', selectTable: 'Bitte wählen Sie einen verfügbaren Tisch.', required: 'Bitte füllen Sie dieses Feld aus.', confirmed: 'Ihr Tisch ist reserviert.', reference: 'Reservierungsnummer', done: 'Fertig',
+  adminTitle: 'Restaurant Management', adminSubtitle: 'Gäste, Marke und Kampagnen', crm: 'Gäste-CRM', branding: 'Marke', campaigns: 'Kampagnen', guest: 'Gast', visits: 'Besuche', spend: 'Umsatz', note: 'Servicehinweis', brandName: 'Restaurantname', brandLine: 'Unterzeile', save: 'Änderungen speichern', saved: 'Änderungen gespeichert.', adminNotice: 'Lokale Demonstrationsdaten – keine produktive Anmeldung.',
+  language: 'Sprache', mobileMenu: 'Navigation öffnen', previous: 'Vorherige', next: 'Nächste', theme: 'Farbthema', layoutChanged: 'Website-Vorlage gewechselt', themeChanged: 'Farbthema gewechselt', skip: 'Zum Inhalt springen',
 };
+
+const en = {
+  navMenu: 'Menu', navExperience: 'Experience', navStories: 'Journal', navEvents: 'Evenings', book: 'Book a table',
+  heroKicker: 'Contemporary dining · Berlin', heroTitle: 'An evening worth remembering.', heroSubtitle: 'Precise cooking, warm hospitality and your favourite table — experienced before you reserve.',
+  heroEditorialKicker: 'The seasonal journal · Issue 01', heroEditorialTitle: 'One table. A thousand stories.', heroEditorialSubtitle: 'Meet the people, produce and ideas behind Arshida’s new menu.',
+  reserveExperience: 'Reserve the experience', exploreMenu: 'Explore the menu', openTonight: 'Tonight · 17:30–23:30', rating: '4.9 guest rating', seatView: '360° seat view', localProduce: 'Seasonally curated',
+  appearance: 'Appearance', siteLayout: 'Website layout', cinematic: 'Cinematic experience', editorial: 'Brand journal', darkThemes: 'Dark themes', lightThemes: 'Light themes', close: 'Close',
+  menuEyebrow: 'The current menu', menuTitle: 'Composed for this moment.', menuSubtitle: 'Seasonal produce, clear flavours and refined Persian accents.', search: 'Search dishes', noResults: 'No dishes found.', all: 'All', add: 'Add', details: 'Details', minutes: 'min', chefChoice: 'Signature',
+  storyEyebrow: 'Origin & craft', storyTitle: 'Modern in Berlin. Rooted in hospitality.', storyText: 'Arshida brings European precision together with the warmth of Persian table culture. Every ingredient has an origin; every course has a rhythm.', storyCta: 'Our philosophy',
+  sourceOne: 'Saffron from Khorasan', sourceTwo: 'Produce from Brandenburg', sourceThree: 'Hand-thrown ceramics',
+  reserveEyebrow: 'Your place in the room', reserveTitle: 'See it. Choose it. Arrive.', reserveText: 'Choose your table in the dining room and experience its perspective before you reserve.', openReservation: 'Open table plan', view360: 'View in 360°', available: 'Available', reserved: 'Reserved', seats: 'seats',
+  eventsEyebrow: 'Special evenings', eventsTitle: 'More than dinner.', eventBook: 'Reserve a place',
+  newsletterTitle: 'A letter from the kitchen.', newsletterText: 'New menus, special evenings and open Chef’s Counter seats — considered, never daily.', email: 'Email address', subscribe: 'Join the list', subscribed: 'You are on the list.',
+  footerVisit: 'Visit', footerAddress: 'Torstraße 148 · 10119 Berlin', footerHours: 'Tue–Sun · 17:30–23:30', footerContact: '+49 30 884 21 90', restaurantLogin: 'Restaurant Login', legal: 'Legal · Privacy',
+  cart: 'Your order', emptyCart: 'Your order is still empty.', subtotal: 'Subtotal', discount: 'Discount', total: 'Total', promo: 'Promotion code', apply: 'Apply', invalidPromo: 'That code is not valid. Check the spelling and try again.', checkout: 'Place order', orderConfirmed: 'Your order has been placed.',
+  profile: 'Your visit', loyalty: 'Loyalty balance', points: 'points', orderStatus: 'Active order', inKitchen: 'Being prepared in the kitchen', bookings: 'Reservations', noBookings: 'You have no reservations yet.',
+  dishAbout: 'About this course', dietary: 'Dietary notes', quantity: 'Quantity', addToOrder: 'Add to order', halal: 'Halal', signature: 'Signature', glutenFree: 'Gluten free', omega: 'Omega-3', vegetarian: 'Vegetarian',
+  reservation: 'Reservation', stepDate: 'Date & guests', stepTable: 'Choose a table', stepDetails: 'Your details', date: 'Date', time: 'Time', party: 'Guests', continue: 'Continue', back: 'Back', name: 'Full name', phone: 'Phone', notes: 'Requests or allergies', confirm: 'Confirm reservation', selectTable: 'Choose an available table to continue.', required: 'Complete this field.', confirmed: 'Your table is reserved.', reference: 'Reservation reference', done: 'Done',
+  adminTitle: 'Restaurant Management', adminSubtitle: 'Guests, brand and campaigns', crm: 'Guest CRM', branding: 'Brand', campaigns: 'Campaigns', guest: 'Guest', visits: 'Visits', spend: 'Spend', note: 'Service note', brandName: 'Restaurant name', brandLine: 'Descriptor', save: 'Save changes', saved: 'Changes saved.', adminNotice: 'Local demonstration data — no production authentication.',
+  language: 'Language', mobileMenu: 'Open navigation', previous: 'Previous', next: 'Next', theme: 'Colour theme', layoutChanged: 'Website layout changed', themeChanged: 'Colour theme changed', skip: 'Skip to content',
+};
+
+const fa = {
+  navMenu:'منو',navExperience:'تجربه',navStories:'مجله',navEvents:'شب‌های ویژه',book:'رزرو میز',heroKicker:'آشپزی معاصر · برلین',heroTitle:'شبی که در خاطر می‌ماند.',heroSubtitle:'آشپزی دقیق، مهمان‌نوازی گرم و میز دلخواه شما؛ پیش از رزرو آن را تجربه کنید.',heroEditorialKicker:'مجله فصل · شماره ۰۱',heroEditorialTitle:'یک میز، هزار روایت.',heroEditorialSubtitle:'با آدم‌ها، مواد اولیه و ایده‌های پشت منوی جدید آرشیدا آشنا شوید.',reserveExperience:'رزرو تجربه',exploreMenu:'مشاهده منو',openTonight:'امشب · ۱۷:۳۰ تا ۲۳:۳۰',rating:'امتیاز مهمانان ۴٫۹',seatView:'نمای ۳۶۰ درجه میز',localProduce:'انتخاب فصلی',appearance:'ظاهر سایت',siteLayout:'قالب سایت',cinematic:'تجربه سینمایی',editorial:'مجله برند',darkThemes:'تم‌های تاریک',lightThemes:'تم‌های روشن',close:'بستن',menuEyebrow:'منوی جاری',menuTitle:'برای همین لحظه ساخته شده.',menuSubtitle:'مواد فصلی، طعم‌های شفاف و اشاره‌های ظریف ایرانی.',search:'جست‌وجوی غذا',noResults:'غذایی پیدا نشد.',all:'همه',add:'افزودن',details:'جزئیات',minutes:'دقیقه',chefChoice:'امضای سرآشپز',storyEyebrow:'ریشه و مهارت',storyTitle:'مدرن در برلین؛ ریشه‌دار در مهمان‌نوازی.',storyText:'آرشیدا دقت اروپایی را با گرمای فرهنگ سفره ایرانی پیوند می‌دهد. هر ماده ریشه‌ای دارد و هر بشقاب ریتمی.',storyCta:'فلسفه ما',sourceOne:'زعفران خراسان',sourceTwo:'محصولات براندنبورگ',sourceThree:'سرامیک دست‌ساز',reserveEyebrow:'جای شما در فضا',reserveTitle:'ببینید، انتخاب کنید، برسید.',reserveText:'میز خود را در سالن انتخاب کنید و پیش از رزرو، چشم‌انداز آن را تجربه کنید.',openReservation:'باز کردن نقشه میزها',view360:'نمایش ۳۶۰ درجه',available:'آزاد',reserved:'رزرو شده',seats:'نفر',eventsEyebrow:'شب‌های ویژه',eventsTitle:'فراتر از یک شام.',eventBook:'رزرو جایگاه',newsletterTitle:'نامه‌ای از آشپزخانه.',newsletterText:'منوهای تازه، شب‌های ویژه و ظرفیت‌های آزاد میز سرآشپز؛ گزیده و بدون مزاحمت.',email:'آدرس ایمیل',subscribe:'عضویت',subscribed:'عضویت شما ثبت شد.',footerVisit:'دیدار',footerAddress:'برلین، خیابان تور ۱۴۸',footerHours:'سه‌شنبه تا یکشنبه · ۱۷:۳۰ تا ۲۳:۳۰',footerContact:'+49 30 884 21 90',restaurantLogin:'ورود رستوران',legal:'قوانین · حریم خصوصی',cart:'سفارش شما',emptyCart:'سفارش شما هنوز خالی است.',subtotal:'جمع جزء',discount:'تخفیف',total:'مبلغ نهایی',promo:'کد تخفیف',apply:'اعمال',invalidPromo:'این کد معتبر نیست. املای آن را بررسی کنید.',checkout:'ثبت سفارش',orderConfirmed:'سفارش شما ثبت شد.',profile:'دیدار شما',loyalty:'امتیاز وفاداری',points:'امتیاز',orderStatus:'سفارش فعال',inKitchen:'در حال آماده‌سازی در آشپزخانه',bookings:'رزروها',noBookings:'هنوز رزروی ندارید.',dishAbout:'درباره این بشقاب',dietary:'نکات غذایی',quantity:'تعداد',addToOrder:'افزودن به سفارش',halal:'حلال',signature:'منتخب',glutenFree:'بدون گلوتن',omega:'امگا ۳',vegetarian:'گیاهی',reservation:'رزرو میز',stepDate:'تاریخ و مهمانان',stepTable:'انتخاب میز',stepDetails:'اطلاعات شما',date:'تاریخ',time:'زمان',party:'تعداد مهمان',continue:'ادامه',back:'بازگشت',name:'نام کامل',phone:'تلفن',notes:'درخواست یا حساسیت غذایی',confirm:'تأیید رزرو',selectTable:'یک میز آزاد انتخاب کنید.',required:'این فیلد را کامل کنید.',confirmed:'میز شما رزرو شد.',reference:'شماره رزرو',done:'پایان',adminTitle:'مدیریت رستوران',adminSubtitle:'مهمانان، برند و کمپین‌ها',crm:'مدیریت مهمانان',branding:'برند',campaigns:'کمپین‌ها',guest:'مهمان',visits:'مراجعه',spend:'خرید',note:'یادداشت سرویس',brandName:'نام رستوران',brandLine:'عنوان کوتاه',save:'ذخیره تغییرات',saved:'تغییرات ذخیره شد.',adminNotice:'داده‌های محلی نمایشی؛ ورود واقعی پیاده‌سازی نشده است.',language:'زبان',mobileMenu:'باز کردن منو',previous:'قبلی',next:'بعدی',theme:'تم رنگی',layoutChanged:'قالب سایت تغییر کرد',themeChanged:'تم رنگی تغییر کرد',skip:'رفتن به محتوای اصلی',
+};
+
+const ar = {
+  navMenu:'القائمة',navExperience:'التجربة',navStories:'المجلة',navEvents:'أمسيات',book:'احجز طاولة',heroKicker:'مطبخ معاصر · برلين',heroTitle:'أمسية تبقى في الذاكرة.',heroSubtitle:'طهي دقيق وضيافة دافئة وطاولتك المفضلة — اختبرها قبل الحجز.',heroEditorialKicker:'المجلة الموسمية · العدد ٠١',heroEditorialTitle:'طاولة واحدة. ألف حكاية.',heroEditorialSubtitle:'تعرّف على الأشخاص والمكونات والأفكار خلف قائمة أرشيدا الجديدة.',reserveExperience:'احجز التجربة',exploreMenu:'استكشف القائمة',openTonight:'الليلة · 17:30–23:30',rating:'تقييم الضيوف 4.9',seatView:'عرض المقعد 360°',localProduce:'مختارات موسمية',appearance:'مظهر الموقع',siteLayout:'قالب الموقع',cinematic:'تجربة سينمائية',editorial:'مجلة العلامة',darkThemes:'سمات داكنة',lightThemes:'سمات فاتحة',close:'إغلاق',menuEyebrow:'القائمة الحالية',menuTitle:'مصممة لهذه اللحظة.',menuSubtitle:'مكونات موسمية ونكهات واضحة ولمسات فارسية راقية.',search:'ابحث عن طبق',noResults:'لم يتم العثور على أطباق.',all:'الكل',add:'إضافة',details:'التفاصيل',minutes:'دقيقة',chefChoice:'توقيع الشيف',storyEyebrow:'الأصل والحرفة',storyTitle:'عصرية في برلين، ومتجذرة في الضيافة.',storyText:'تجمع أرشيدا بين الدقة الأوروبية ودفء ثقافة المائدة الفارسية. لكل مكوّن أصل ولكل طبق إيقاع.',storyCta:'فلسفتنا',sourceOne:'زعفران من خراسان',sourceTwo:'منتجات من براندنبورغ',sourceThree:'خزف مصنوع يدوياً',reserveEyebrow:'مكانك في القاعة',reserveTitle:'شاهدها. اخترها. وصل.',reserveText:'اختر طاولتك في القاعة وعاين منظورها قبل الحجز.',openReservation:'افتح مخطط الطاولات',view360:'عرض 360°',available:'متاحة',reserved:'محجوزة',seats:'مقاعد',eventsEyebrow:'أمسيات خاصة',eventsTitle:'أكثر من عشاء.',eventBook:'احجز مكاناً',newsletterTitle:'رسالة من المطبخ.',newsletterText:'قوائم جديدة وأمسيات خاصة ومقاعد متاحة على طاولة الشيف — بعناية ومن دون إزعاج.',email:'البريد الإلكتروني',subscribe:'اشترك',subscribed:'تم اشتراكك.',footerVisit:'الزيارة',footerAddress:'تورشتراسه 148 · برلين',footerHours:'الثلاثاء–الأحد · 17:30–23:30',footerContact:'+49 30 884 21 90',restaurantLogin:'دخول المطعم',legal:'الشروط · الخصوصية',cart:'طلبك',emptyCart:'طلبك لا يزال فارغاً.',subtotal:'المجموع الفرعي',discount:'الخصم',total:'الإجمالي',promo:'رمز العرض',apply:'تطبيق',invalidPromo:'الرمز غير صالح. تحقق من كتابته.',checkout:'إرسال الطلب',orderConfirmed:'تم إرسال طلبك.',profile:'زيارتك',loyalty:'رصيد الولاء',points:'نقطة',orderStatus:'الطلب الحالي',inKitchen:'قيد التحضير في المطبخ',bookings:'الحجوزات',noBookings:'لا توجد حجوزات بعد.',dishAbout:'عن هذا الطبق',dietary:'ملاحظات غذائية',quantity:'الكمية',addToOrder:'أضف إلى الطلب',halal:'حلال',signature:'توقيع',glutenFree:'خالٍ من الغلوتين',omega:'أوميغا 3',vegetarian:'نباتي',reservation:'الحجز',stepDate:'التاريخ والضيوف',stepTable:'اختر طاولة',stepDetails:'بياناتك',date:'التاريخ',time:'الوقت',party:'الضيوف',continue:'متابعة',back:'رجوع',name:'الاسم الكامل',phone:'الهاتف',notes:'طلبات أو حساسية',confirm:'تأكيد الحجز',selectTable:'اختر طاولة متاحة للمتابعة.',required:'يرجى إكمال هذا الحقل.',confirmed:'تم حجز طاولتك.',reference:'رقم الحجز',done:'تم',adminTitle:'إدارة المطعم',adminSubtitle:'الضيوف والعلامة والحملات',crm:'إدارة الضيوف',branding:'العلامة',campaigns:'الحملات',guest:'الضيف',visits:'الزيارات',spend:'الإنفاق',note:'ملاحظة الخدمة',brandName:'اسم المطعم',brandLine:'الوصف المختصر',save:'حفظ التغييرات',saved:'تم حفظ التغييرات.',adminNotice:'بيانات عرض محلية — لا يوجد تسجيل دخول إنتاجي.',language:'اللغة',mobileMenu:'فتح التنقل',previous:'السابق',next:'التالي',theme:'سمة الألوان',layoutChanged:'تم تغيير قالب الموقع',themeChanged:'تم تغيير سمة الألوان',skip:'انتقل إلى المحتوى',
+};
+
+export const translations = { de, en, fa, ar };

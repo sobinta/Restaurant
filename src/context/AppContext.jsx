@@ -1,201 +1,168 @@
-import React, { createContext, useContext, useState } from 'react';
-import { DISHES, TABLES, GUESTS_CRM, CAMPAIGNS, REWARDS } from '../data/mockData';
-import confetti from 'canvas-confetti';
+/* eslint-disable react/only-export-components */
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-const AppContext = createContext();
+const AppContext = createContext(null);
+const STORAGE_KEY = 'arshida-platform-v2';
+const CHANNEL_KEY = 'arshida-live-platform';
+
+export const ORDER_STATUSES = ['submitted', 'confirmed', 'preparing', 'cooking', 'quality_check', 'ready', 'courier_handoff', 'completed'];
+
+const now = () => new Date().toISOString();
+const seedOrder = {
+  id: 'ORD-2048', type: 'delivery', status: 'cooking', total: 84, estimate: '20–25 min', createdAt: now(),
+  customer: { name: 'Leonie Weber', phone: '+49 30 884 21 90', address: 'Torstraße 82, Berlin' },
+  items: [{ name: 'Duck · Saffron · Barberry', quantity: 1, price: 38 }, { name: 'Wild Mushroom Risotto · Truffle', quantity: 1, price: 29 }],
+  history: [
+    { status: 'submitted', at: now() },
+    { status: 'confirmed', at: now() },
+    { status: 'preparing', at: now() },
+    { status: 'cooking', at: now() },
+  ],
+};
+
+const seedState = {
+  orders: [seedOrder], bookings: [], eventBookings: [], favoriteDishIds: [], favoriteEventIds: [], loyaltyPoints: 650,
+  feedback: [], waitlist: [], activity: [],
+};
+
+const GUESTS = [
+  { id: 'CRM-101', name: 'Anna Keller', tier: 'Gold', visits: 14, total: '€2,840', note: 'Prefers quiet window tables' },
+  { id: 'CRM-102', name: 'Omar Haddad', tier: 'Platinum', visits: 22, total: '€4,960', note: 'Gluten-free menu' },
+  { id: 'CRM-103', name: 'Sara Rahimi', tier: 'Silver', visits: 7, total: '€1,290', note: 'Anniversary in October' },
+];
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return saved?.version === 2 ? { ...seedState, ...saved.data } : seedState;
+  } catch { return seedState; }
+}
+
+function mirrorToIndexedDb(data) {
+  if (!('indexedDB' in window)) return;
+  const request = indexedDB.open('arshida-platform', 1);
+  request.onupgradeneeded = () => request.result.createObjectStore('state');
+  request.onsuccess = () => {
+    const tx = request.result.transaction('state', 'readwrite');
+    tx.objectStore('state').put({ version: 2, data }, 'snapshot');
+    tx.oncomplete = () => request.result.close();
+  };
+}
 
 export function AppProvider({ children }) {
-  // Cart State
+  const [platform, setPlatform] = useState(loadState);
   const [cart, setCart] = useState([]);
-
-  // Modals & Active Selections
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCrmOpen, setIsCrmOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isWhiteLabelOpen, setIsWhiteLabelOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [selectedDish, setSelectedDish] = useState(null);
-  
-  // 360 Table View Modal
   const [selectedTableFor360, setSelectedTableFor360] = useState(null);
   const [selectedTableForBooking, setSelectedTableForBooking] = useState(null);
-  
-  // Campaigns & Discounts
-  const [activeCampaign, setActiveCampaign] = useState(CAMPAIGNS[0]);
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [promoError, setPromoError] = useState('');
+  const channelRef = useRef(null);
 
-  // CRM State
-  const [guests, setGuests] = useState(GUESTS_CRM);
-
-  // User Profile & Order Tracker
-  const [user, setUser] = useState({
-    name: "آقای امیرحسین رضایی",
-    phone: "۰۹۱۲۳۴۵۶۷۸۹",
-    points: 650,
-    tier: "VIP Gold",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    savedTables: ["T-01", "T-04"],
-    bookings: [
-      {
-        id: "RES-9821",
-        date: "۱۴۰۳/۰۶/۱۰",
-        time: "۲۰:۳۰",
-        table: "میز VIP شماره ۴ - لوکس آکواریوم",
-        guests: 4,
-        status: "تأیید شده",
-        deposit: "۶۰۰,۰۰۰ تومان"
-      }
-    ]
-  });
-
-  const [activeOrder, setActiveOrder] = useState({
-    id: "ORD-7749",
-    type: "بیرون‌بر", // بیرون‌بر, ارسال با پیک, سفارش روی میز
-    status: "in_kitchen", // pending, in_kitchen, on_way, delivered
-    items: [
-      { name: "استیک فیله مینیون", qty: 1, price: 980000 },
-      { name: "سالاد سزار اختصاصی", qty: 1, price: 390000 }
-    ],
-    total: 1370000,
-    time: "۲۰-۲۵ دقیقه ماندگار"
-  });
-
-  // Cart Functions
-  const addToCart = (dish, options = {}, quantity = 1) => {
-    setCart(prev => {
-      const existingIndex = prev.findIndex(item => item.dish.id === dish.id && JSON.stringify(item.options) === JSON.stringify(options));
-      if (existingIndex > -1) {
-        const updated = [...prev];
-        updated[existingIndex].quantity += quantity;
-        return updated;
-      }
-      return [...prev, { dish, options, quantity }];
+  const publish = useCallback((updater, action = 'update') => {
+    setPlatform((current) => {
+      const next = typeof updater === 'function' ? updater(current) : updater;
+      const withActivity = { ...next, activity: [{ id: crypto.randomUUID(), action, at: now() }, ...(next.activity || [])].slice(0, 80) };
+      channelRef.current?.postMessage({ type: 'state', data: withActivity });
+      return withActivity;
     });
-    // Trigger celebratory confetti effect
-    try {
-      confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
-    } catch(e) {}
-  };
+  }, []);
 
-  const removeFromCart = (index) => {
-    setCart(prev => prev.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, data: platform }));
+    mirrorToIndexedDb(platform);
+  }, [platform]);
 
-  const updateCartQuantity = (index, delta) => {
-    setCart(prev => {
-      const updated = [...prev];
-      const newQty = updated[index].quantity + delta;
-      if (newQty <= 0) {
-        return updated.filter((_, i) => i !== index);
-      }
-      updated[index].quantity = newQty;
-      return updated;
+  useEffect(() => {
+    if (!('BroadcastChannel' in window)) return undefined;
+    const channel = new BroadcastChannel(CHANNEL_KEY);
+    channelRef.current = channel;
+    channel.onmessage = (event) => event.data?.type === 'state' && setPlatform(event.data.data);
+    return () => { channel.close(); channelRef.current = null; };
+  }, []);
+
+  const addToCart = useCallback((dish, options = {}, quantity = 1) => {
+    setCart((current) => {
+      const index = current.findIndex((item) => item.dish.id === dish.id && JSON.stringify(item.options) === JSON.stringify(options));
+      if (index < 0) return [...current, { dish, options, quantity }];
+      return current.map((item, itemIndex) => itemIndex === index ? { ...item, quantity: item.quantity + quantity } : item);
     });
-  };
+  }, []);
 
-  const clearCart = () => setCart([]);
+  const updateCartQuantity = useCallback((index, delta) => setCart((current) => current
+    .map((item, itemIndex) => itemIndex === index ? { ...item, quantity: item.quantity + delta } : item)
+    .filter((item) => item.quantity > 0)), []);
 
-  const applyPromoCode = (code) => {
-    setPromoError('');
-    if (!code) return;
-    const found = CAMPAIGNS.find(c => c.code.toUpperCase() === code.trim().toUpperCase());
-    if (found) {
-      setAppliedPromo(found);
-      try {
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-      } catch(e) {}
-    } else {
-      setPromoError('کد تخفیف وارد شده معتبر نیست');
+  const applyPromoCode = useCallback((code) => {
+    if (code.trim().toUpperCase() === 'ARSHIDA20') {
+      setAppliedPromo({ code: 'ARSHIDA20', discountPercent: 20 }); setPromoError(''); return true;
     }
-  };
+    setAppliedPromo(null); setPromoError('invalid'); return false;
+  }, []);
 
-  // Open 360 View Modal for a Table
-  const open360View = (table) => {
-    setSelectedTableFor360(table);
-  };
-
-  const close360View = () => {
-    setSelectedTableFor360(null);
-  };
-
-  // Confirm Reservation
-  const addReservation = (bookingData) => {
-    const newBooking = {
-      id: `RES-${Math.floor(1000 + Math.random() * 9000)}`,
-      ...bookingData,
-      status: "تأیید شده"
+  const createOrder = useCallback((details) => {
+    if (!cart.length) return null;
+    const subtotal = cart.reduce((sum, item) => sum + item.dish.price * item.quantity, 0);
+    const discount = appliedPromo ? subtotal * appliedPromo.discountPercent / 100 : 0;
+    const deliveryFee = details.type === 'delivery' ? 4.5 : 0;
+    const order = {
+      id: `ORD-${Date.now().toString().slice(-6)}`, status: 'submitted', createdAt: now(), estimate: details.type === 'delivery' ? '35–45 min' : '20–25 min',
+      ...details, subtotal, discount, deliveryFee, total: Math.max(0, subtotal - discount + deliveryFee),
+      items: cart.map((item) => ({ dishId: item.dish.id, name: item.dish.name.en, quantity: item.quantity, price: item.dish.price, options: item.options })),
+      history: [{ status: 'submitted', at: now() }],
     };
-    setUser(prev => ({
-      ...prev,
-      points: prev.points + 150, // Reward 150 points for online booking
-      bookings: [newBooking, ...prev.bookings]
-    }));
-    // Add guest to CRM if not exists
-    const newCrmEntry = {
-      id: `CRM-${Math.floor(100 + Math.random() * 900)}`,
-      name: bookingData.guestName,
-      phone: bookingData.guestPhone,
-      tier: "Silver Regular",
-      visits: 1,
-      totalSpent: `${bookingData.deposit} تومان (بیعانه)`,
-      favTable: bookingData.tableName,
-      allergies: bookingData.notes || "ثبت نشده",
-      notes: "رزرو آنلاین اولیه با ویوی ۳۶۰ درجه",
-      lastVisit: new Date().toLocaleDateString('fa-IR'),
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
-    };
-    setGuests(prev => [newCrmEntry, ...prev]);
+    publish((current) => ({ ...current, orders: [order, ...current.orders] }), `order:create:${order.id}`);
+    setCart([]); setAppliedPromo(null); return order;
+  }, [appliedPromo, cart, publish]);
 
-    try {
-      confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 } });
-    } catch(e) {}
-  };
+  const updateOrderStatus = useCallback((orderId, status, message = '') => {
+    if (!ORDER_STATUSES.includes(status)) return false;
+    publish((current) => ({ ...current, orders: current.orders.map((order) => order.id === orderId ? {
+      ...order, status, message, history: [...order.history, { status, at: now(), message }],
+    } : order) }), `order:status:${orderId}:${status}`);
+    return true;
+  }, [publish]);
 
-  return (
-    <AppContext.Provider value={{
-      cart,
-      addToCart,
-      removeFromCart,
-      updateCartQuantity,
-      clearCart,
-      
-      isReservationOpen,
-      setIsReservationOpen,
-      isCartOpen,
-      setIsCartOpen,
-      isCrmOpen,
-      setIsCrmOpen,
-      isProfileOpen,
-      setIsProfileOpen,
-      isWhiteLabelOpen,
-      setIsWhiteLabelOpen,
-      
-      selectedDish,
-      setSelectedDish,
-      
-      selectedTableFor360,
-      open360View,
-      close360View,
-      
-      selectedTableForBooking,
-      setSelectedTableForBooking,
-      
-      activeCampaign,
-      setActiveCampaign,
-      appliedPromo,
-      applyPromoCode,
-      promoError,
-      
-      guests,
-      user,
-      addReservation,
-      activeOrder,
-      setActiveOrder
-    }}>
-      {children}
-    </AppContext.Provider>
-  );
+  const addReservation = useCallback((booking) => {
+    const record = { id: `AR-${Date.now().toString().slice(-6)}`, ...booking, status: 'confirmed', createdAt: now() };
+    publish((current) => ({ ...current, bookings: [record, ...current.bookings] }), `reservation:create:${record.id}`);
+    return record;
+  }, [publish]);
+
+  const bookEvent = useCallback((booking) => {
+    const record = { id: `EV-${Date.now().toString().slice(-6)}`, ...booking, status: 'confirmed', createdAt: now() };
+    publish((current) => ({ ...current, eventBookings: [record, ...current.eventBookings] }), `event:book:${record.id}`);
+    return record;
+  }, [publish]);
+
+  const toggleFavoriteDish = useCallback((id) => publish((current) => ({ ...current, favoriteDishIds: current.favoriteDishIds.includes(id) ? current.favoriteDishIds.filter((item) => item !== id) : [...current.favoriteDishIds, id] }), `dish:favorite:${id}`), [publish]);
+  const toggleFavoriteEvent = useCallback((id) => publish((current) => ({ ...current, favoriteEventIds: current.favoriteEventIds.includes(id) ? current.favoriteEventIds.filter((item) => item !== id) : [...current.favoriteEventIds, id] }), `event:favorite:${id}`), [publish]);
+  const redeemReward = useCallback((points, title) => {
+    if (platform.loyaltyPoints < points) return false;
+    publish((current) => ({ ...current, loyaltyPoints: current.loyaltyPoints - points }), `reward:redeem:${title}`); return true;
+  }, [platform.loyaltyPoints, publish]);
+
+  const guests = GUESTS;
+  const user = useMemo(() => ({ name: 'Leonie Weber', phone: '+49 30 884 21 90', points: platform.loyaltyPoints, tier: 'Gold Member', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80' }), [platform.loyaltyPoints]);
+  const activeOrder = platform.orders.find((order) => order.status !== 'completed') || platform.orders[0] || null;
+
+  const value = useMemo(() => ({
+    ...platform, cart, addToCart, removeFromCart: (index) => setCart((current) => current.filter((_, itemIndex) => itemIndex !== index)), updateCartQuantity, clearCart: () => setCart([]),
+    isReservationOpen, setIsReservationOpen, isCartOpen, setIsCartOpen, isCrmOpen, setIsCrmOpen, isProfileOpen, setIsProfileOpen,
+    isWhiteLabelOpen, setIsWhiteLabelOpen, isAdminOpen, setIsAdminOpen, selectedDish, setSelectedDish, selectedTableFor360,
+    open360View: setSelectedTableFor360, close360View: () => setSelectedTableFor360(null), selectedTableForBooking, setSelectedTableForBooking,
+    activeCampaign: { code: 'ARSHIDA20', discountPercent: 20 }, appliedPromo, applyPromoCode, promoError, guests, user, activeOrder,
+    createOrder, updateOrderStatus, addReservation, bookEvent, toggleFavoriteDish, toggleFavoriteEvent, redeemReward,
+    resetPlatform: () => publish(seedState, 'platform:reset'),
+  }), [platform, cart, addToCart, updateCartQuantity, isReservationOpen, isCartOpen, isCrmOpen, isProfileOpen, isWhiteLabelOpen, isAdminOpen, selectedDish, selectedTableFor360, selectedTableForBooking, appliedPromo, applyPromoCode, promoError, activeOrder, guests, user, createOrder, updateOrderStatus, addReservation, bookEvent, toggleFavoriteDish, toggleFavoriteEvent, redeemReward, publish]);
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
 export function useApp() {
