@@ -1,17 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { localize } from '../data/siteData';
 import { pageCopy } from '../data/platformData';
 
-export default function CinematicLoader() {
+export default function CinematicLoader({ onComplete }) {
   const { lang, branding } = useTheme();
   const [visible, setVisible] = useState(true);
+  const completedRef = useRef(false);
+
+  const complete = useCallback(() => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setVisible(false);
+    onComplete?.();
+  }, [onComplete]);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const timer = window.setTimeout(() => setVisible(false), reduced ? 320 : 2200);
+    const timer = window.setTimeout(complete, reduced ? 320 : 3400);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [complete]);
 
   if (!visible) return null;
   return (
@@ -23,7 +31,7 @@ export default function CinematicLoader() {
         <strong>{branding.name}</strong>
         <small>{branding.subName}</small>
       </div>
-      <button onClick={() => setVisible(false)}>{localize(pageCopy.skipIntro, lang)}</button>
+      <button onClick={complete}>{localize(pageCopy.skipIntro, lang)}</button>
     </div>
   );
 }
