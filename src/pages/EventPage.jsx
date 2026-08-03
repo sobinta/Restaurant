@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, CalendarPlus, CheckCircle2, Clock3, Heart, Share2, Sparkles, Ticket, Users } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -16,6 +16,16 @@ export default function EventPage() {
   const event = useMemo(() => eventDetails.find((item) => item.slug === slug), [slug]);
   const [guests, setGuests] = useState(2);
   const [reference, setReference] = useState('');
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    const resetScroll = () => window.scrollTo(0, 0);
+    resetScroll();
+    const frame = window.requestAnimationFrame(resetScroll);
+    const timer = window.setTimeout(() => { resetScroll(); root.style.scrollBehavior = previousBehavior; }, 80);
+    return () => { window.cancelAnimationFrame(frame); window.clearTimeout(timer); root.style.scrollBehavior = previousBehavior; };
+  }, [slug]);
   if (!event) return <main className="route-page route-not-found"><h1>Event not found</h1></main>;
 
   const booked = eventBookings.filter((item) => item.eventId === event.id).reduce((sum, item) => sum + item.guests, 0);

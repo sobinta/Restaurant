@@ -375,3 +375,31 @@ body.is-rtl .editorial-intro h1 { line-height:1.08; }
 .buffet-modal-copy { grid-column:2;grid-row:1; }
 .buffet-campaign-modal>.modal-close { position:absolute;top:18px;inset-inline-end:18px;margin:0; }
 @media (max-width:760px) { .buffet-modal-art,.buffet-modal-copy { grid-column:auto;grid-row:auto; } }
+
+/* Mobile presentation refinements */
+@media (max-width:760px) {
+  .buffet-campaign-shell { align-items:center;padding:max(14px,env(safe-area-inset-top)) 16px max(14px,env(safe-area-inset-bottom)); }
+  .buffet-campaign-shell .buffet-campaign-modal { width:min(430px,100%);max-height:82svh;border-radius:26px;overflow:auto; }
+  .buffet-campaign-modal .buffet-modal-art { height:170px;min-height:170px; }
+  .buffet-campaign-modal .buffet-modal-art>span { inset-inline:18px;bottom:15px;font-size:18px; }.buffet-campaign-modal .buffet-modal-art>span b { font-size:36px; }
+  .buffet-campaign-modal .buffet-modal-copy { padding:17px 17px 18px; }
+  .buffet-campaign-modal .buffet-modal-copy h2 { font-size:38px;line-height:.95;margin:8px 0 10px; }
+  .buffet-campaign-modal .buffet-modal-copy>p { font-size:10px;line-height:1.55;margin:0; }
+  .buffet-campaign-modal .buffet-modal-schedule { margin:11px 0;padding:9px 0;font-size:8px; }
+  .buffet-campaign-modal .buffet-modal-prices p { padding:9px 10px; }.buffet-campaign-modal .buffet-modal-prices strong { font-size:20px; }
+  .buffet-campaign-modal .buffet-modal-actions { flex-direction:row;margin-top:12px; }.buffet-campaign-modal .buffet-modal-actions .button { width:auto;flex:1;min-height:43px;padding-inline:8px;font-size:8px; }
+  .buffet-campaign-modal>.modal-close { top:11px;inset-inline-end:11px;width:40px;height:40px; }
+
+  .hero-cinematic { min-height:auto;display:flex;align-items:stretch;flex-direction:column;padding-top:var(--header-height); }
+  .hero-cinematic .hero-content { display:contents; }
+  .hero-cinematic .hero-copy { order:1;width:calc(100% - 28px);max-width:none;margin-inline:auto;padding:58px 0 40px; }
+  .hero-cinematic .hero-photo { position:relative;order:2;inset:auto;display:block;height:48svh;min-height:370px;object-position:center; }
+  .hero-cinematic .hero-scrim { display:none; }
+  .hero-cinematic .hero-meta { order:3;width:calc(100% - 28px);margin:0 auto;padding:21px 0 29px; }
+  .hero-cinematic .hero-copy h1 { font-size:clamp(54px,16.5vw,76px); }
+  .hero-editorial .editorial-intro { order:-1; }
+}
+
+@media (max-width:370px) {
+  .buffet-campaign-modal .buffet-modal-actions { flex-direction:column; }.buffet-campaign-modal .buffet-modal-actions .button { width:100%; }
+}

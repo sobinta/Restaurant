@@ -27,7 +27,7 @@ const localeCodes = { de: 'de-DE', en: 'en-GB', fa: 'fa-IR', ar: 'ar-DE' };
 const formatPrice = (value, lang) => new Intl.NumberFormat(localeCodes[lang], { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
 const formatEventDate = (value, lang) => new Intl.DateTimeFormat(localeCodes[lang], { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 
-function Modal({ open, onClose, title, children, size = 'medium', className = '' }) {
+function Modal({ open, onClose, title, children, size = 'medium', className = '', shellClassName = '' }) {
   const panelRef = useRef(null);
   useEffect(() => {
     if (!open) return undefined;
@@ -54,7 +54,7 @@ function Modal({ open, onClose, title, children, size = 'medium', className = ''
   }, [open, onClose]);
   if (!open) return null;
   return (
-    <div className="modal-shell" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div className={`modal-shell ${shellClassName}`} role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <section ref={panelRef} role="dialog" aria-modal="true" aria-label={title} className={`modal-panel modal-${size} ${className}`}>
         <button className="icon-button modal-close" onClick={onClose} aria-label="Close"><X size={20} /></button>
         {children}
@@ -377,7 +377,7 @@ function BuffetCampaignModal({ open, onClose }) {
   const { setIsReservationOpen, setReservationIntent } = useApp();
   const reserve = () => { setReservationIntent(`${localize(lunchBuffet.title, lang)} · ${localize(lunchBuffet.days, lang)} · ${lunchBuffet.time}`); onClose(); setIsReservationOpen(true); };
   const viewMenu = () => { onClose(); window.setTimeout(() => document.getElementById('buffet-menu-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 220); };
-  return <Modal open={open} onClose={onClose} title={localize(lunchBuffet.popupTitle, lang)} size="large" className="buffet-campaign-modal"><div className="buffet-modal-art"><img src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=1400&q=88" width="1400" height="1000" alt="Arshida lunch buffet" /><span><b>11:30</b><i />15:30</span></div><div className="buffet-modal-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.popupTitle, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-modal-schedule"><CalendarDays /><span>{localize(lunchBuffet.days, lang)}</span><strong>{lunchBuffet.time}</strong></div><div className="buffet-modal-prices"><p><span>{localize(lunchBuffet.adultLabel, lang)}</span><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><span>{localize(lunchBuffet.childLabel, lang)}</span><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div><div className="buffet-modal-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><button className="button button-quiet" onClick={viewMenu}>{localize(lunchBuffet.viewMenu, lang)}</button></div></div></Modal>;
+  return <Modal open={open} onClose={onClose} title={localize(lunchBuffet.popupTitle, lang)} size="large" className="buffet-campaign-modal" shellClassName="buffet-campaign-shell"><div className="buffet-modal-art"><img src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=1400&q=88" width="1400" height="1000" alt="Arshida lunch buffet" /><span><b>11:30</b><i />15:30</span></div><div className="buffet-modal-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.popupTitle, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-modal-schedule"><CalendarDays /><span>{localize(lunchBuffet.days, lang)}</span><strong>{lunchBuffet.time}</strong></div><div className="buffet-modal-prices"><p><span>{localize(lunchBuffet.adultLabel, lang)}</span><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><span>{localize(lunchBuffet.childLabel, lang)}</span><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div><div className="buffet-modal-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><button className="button button-quiet" onClick={viewMenu}>{localize(lunchBuffet.viewMenu, lang)}</button></div></div></Modal>;
 }
 
 function MainContent() {
