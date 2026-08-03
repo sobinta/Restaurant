@@ -53,6 +53,7 @@ export function AppProvider({ children }) {
   const [platform, setPlatform] = useState(loadState);
   const [cart, setCart] = useState([]);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [reservationIntent, setReservationIntent] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCrmOpen, setIsCrmOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -154,13 +155,13 @@ export function AppProvider({ children }) {
 
   const value = useMemo(() => ({
     ...platform, cart, addToCart, removeFromCart: (index) => setCart((current) => current.filter((_, itemIndex) => itemIndex !== index)), updateCartQuantity, clearCart: () => setCart([]),
-    isReservationOpen, setIsReservationOpen, isCartOpen, setIsCartOpen, isCrmOpen, setIsCrmOpen, isProfileOpen, setIsProfileOpen,
+    isReservationOpen, setIsReservationOpen, reservationIntent, setReservationIntent, isCartOpen, setIsCartOpen, isCrmOpen, setIsCrmOpen, isProfileOpen, setIsProfileOpen,
     isWhiteLabelOpen, setIsWhiteLabelOpen, isAdminOpen, setIsAdminOpen, selectedDish, setSelectedDish, selectedTableFor360,
     open360View: setSelectedTableFor360, close360View: () => setSelectedTableFor360(null), selectedTableForBooking, setSelectedTableForBooking,
     activeCampaign: { code: 'ARSHIDA20', discountPercent: 20 }, appliedPromo, applyPromoCode, promoError, guests, user, activeOrder,
     createOrder, updateOrderStatus, addReservation, bookEvent, toggleFavoriteDish, toggleFavoriteEvent, redeemReward,
     resetPlatform: () => publish(seedState, 'platform:reset'),
-  }), [platform, cart, addToCart, updateCartQuantity, isReservationOpen, isCartOpen, isCrmOpen, isProfileOpen, isWhiteLabelOpen, isAdminOpen, selectedDish, selectedTableFor360, selectedTableForBooking, appliedPromo, applyPromoCode, promoError, activeOrder, guests, user, createOrder, updateOrderStatus, addReservation, bookEvent, toggleFavoriteDish, toggleFavoriteEvent, redeemReward, publish]);
+  }), [platform, cart, addToCart, updateCartQuantity, isReservationOpen, reservationIntent, isCartOpen, isCrmOpen, isProfileOpen, isWhiteLabelOpen, isAdminOpen, selectedDish, selectedTableFor360, selectedTableForBooking, appliedPromo, applyPromoCode, promoError, activeOrder, guests, user, createOrder, updateOrderStatus, addReservation, bookEvent, toggleFavoriteDish, toggleFavoriteEvent, redeemReward, publish]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

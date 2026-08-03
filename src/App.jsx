@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCircle2, ChefHat,
   Camera, ChevronDown, CircleAlert, Clock3, Eye, Globe2, LayoutTemplate,
@@ -9,7 +9,7 @@ import {
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AppProvider, useApp } from './context/AppContext';
 import { categories, localize, tables } from './data/siteData';
-import { enrichedDishes as dishes, eventDetails as events, orderStatusCopy, pageCopy, rewards } from './data/platformData';
+import { enrichedDishes as dishes, eventDetails as events, lunchBuffet, orderStatusCopy, pageCopy, rewards } from './data/platformData';
 import CinematicLoader from './components/CinematicLoader';
 
 const PanoramaViewer = lazy(() => import('./components/PanoramaViewer'));
@@ -134,13 +134,13 @@ function MobileBottomNav({ count, onReserve, onOrder, onAppearance }) {
 }
 
 function Navbar() {
-  const { t, branding } = useTheme();
+  const { t, branding, lang } = useTheme();
   const { cart, setIsCartOpen, setIsReservationOpen, setIsProfileOpen } = useApp();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [mobileAppearanceOpen, setMobileAppearanceOpen] = useState(false);
   const closeMobileAppearance = useCallback(() => setMobileAppearanceOpen(false), []);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const nav = [['#menu', t('navMenu')], ['#experience', t('navExperience')], ['#journal', t('navStories')], ['#events', t('navEvents')]];
+  const nav = [['/#menu', t('navMenu')], ['/#lunch-buffet', localize(categories.find((item) => item.id === 'buffet').label, lang)], ['/#experience', t('navExperience')], ['/#journal', t('navStories')], ['/#events', t('navEvents')]];
   useEffect(() => {
     const media = window.matchMedia('(min-width: 761px)');
     const closeOnDesktop = (event) => event.matches && setMobileAppearanceOpen(false);
@@ -150,7 +150,7 @@ function Navbar() {
   return <>
     <a className="skip-link" href="#main">{t('skip')}</a>
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="Arshida home"><span className="brand-mark">A</span><span><b>{branding.name}</b><small>{branding.subName}</small></span></a>
+      <a className="brand" href="/#top" aria-label="Arshida home"><span className="brand-mark">A</span><span><b>{branding.name}</b><small>{branding.subName}</small></span></a>
       <nav className="desktop-nav">{nav.map(([href, label]) => <a key={href} href={href}>{label}</a>)}</nav>
       <div className="header-actions">
         <LanguageMenu />
@@ -195,13 +195,36 @@ function MenuSection() {
   const [category, setCategory] = useState('all');
   const [query, setQuery] = useState('');
   const shown = dishes.filter((dish) => (category === 'all' || dish.category === category) && localize(dish.name, lang).toLocaleLowerCase(lang).includes(query.toLocaleLowerCase(lang)));
+  const normalizedQuery = query.toLocaleLowerCase(lang);
+  const buffetMatches = (category === 'all' || category === 'buffet') && [lunchBuffet.title, lunchBuffet.eyebrow, lunchBuffet.description].some((value) => localize(value, lang).toLocaleLowerCase(lang).includes(normalizedQuery));
   return <section className="section menu-section" id="menu"><div className="page-width">
     <div className="section-heading split-heading"><div><span className="eyebrow">{t('menuEyebrow')}</span><h2>{t('menuTitle')}</h2></div><p>{t('menuSubtitle')}</p></div>
     <div className="menu-tools"><div className="category-tabs" role="tablist">{categories.map((item) => <button key={item.id} role="tab" aria-selected={category === item.id} className={category === item.id ? 'active' : ''} onClick={() => setCategory(item.id)}>{localize(item.label, lang)}</button>)}</div><label className="search-field"><Search size={18} /><span className="sr-only">{t('search')}</span><input name="dish-search" autoComplete="off" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`${t('search')}…`} /></label></div>
-    {shown.length ? <div className="dish-grid">{shown.map((dish, index) => <article className={`dish-card ${index === 0 ? 'dish-featured' : ''}`} key={dish.id}>
+    {shown.length || buffetMatches ? <div className="dish-grid">{buffetMatches && <BuffetMenuCard />}{shown.map((dish, index) => <article className={`dish-card ${index === 0 && !buffetMatches ? 'dish-featured' : ''}`} key={dish.id}>
       <button className="dish-image" onClick={() => navigate(`/menu/${dish.slug}`)} aria-label={`${t('details')}: ${localize(dish.name, lang)}`}><img src={dish.image} width="1000" height="800" loading={index > 2 ? 'lazy' : 'eager'} alt={localize(dish.name, lang)} />{dish.tags.includes('signature') && <span className="dish-badge"><Sparkles size={13} />{t('chefChoice')}</span>}</button>
       <div className="dish-body"><div className="dish-line"><div><span className="dish-category">{localize(categories.find((item) => item.id === dish.category)?.label, lang)}</span><h3>{localize(dish.name, lang)}</h3></div><strong>{formatPrice(dish.price, lang)}</strong></div><p>{localize(dish.description, lang)}</p><div className="dish-meta"><span><Star size={14} />{dish.rating}</span><span><Clock3 size={14} />{dish.time} {t('minutes')}</span><div className="dish-actions"><button className="text-button" onClick={() => navigate(`/menu/${dish.slug}`)}>{t('details')}</button><button className="round-add" onClick={() => addToCart(dish)} aria-label={`${t('add')}: ${localize(dish.name, lang)}`}><Plus size={18} /></button></div></div></div>
     </article>)}</div> : <div className="empty-state"><Search size={28} /><p>{t('noResults')}</p><button className="text-button" onClick={() => { setQuery(''); setCategory('all'); }}>{t('all')}</button></div>}
+  </div></section>;
+}
+
+function BuffetMenuCard() {
+  const { lang } = useTheme();
+  const { setIsReservationOpen, setReservationIntent } = useApp();
+  const reserve = () => { setReservationIntent(`${localize(lunchBuffet.title, lang)} · ${localize(lunchBuffet.days, lang)} · ${lunchBuffet.time}`); setIsReservationOpen(true); };
+  return <article className="buffet-menu-card" id="buffet-menu-card">
+    <div className="buffet-card-visual"><img src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=1400&q=88" width="1400" height="900" loading="lazy" alt="Arshida weekday lunch buffet" /><span>11:30<small>—</small>15:30</span></div>
+    <div className="buffet-card-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h3>{localize(lunchBuffet.title, lang)}</h3><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-card-facts"><span><CalendarDays />{localize(lunchBuffet.days, lang)}</span><strong>{formatPrice(lunchBuffet.adultPrice, lang)}<small>{localize(lunchBuffet.adultLabel, lang)}</small></strong><strong>{formatPrice(lunchBuffet.childPrice, lang)}<small>{localize(lunchBuffet.childLabel, lang)}</small></strong></div><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button></div>
+  </article>;
+}
+
+function BuffetSection() {
+  const { lang } = useTheme();
+  const { setIsReservationOpen, setReservationIntent } = useApp();
+  const reserve = () => { setReservationIntent(`${localize(lunchBuffet.title, lang)} · ${localize(lunchBuffet.days, lang)} · ${lunchBuffet.time}`); setIsReservationOpen(true); };
+  return <section className="buffet-section" id="lunch-buffet"><div className="page-width buffet-stage">
+    <div className="buffet-time" aria-label={lunchBuffet.time}><span>11:30</span><i /><span>15:30</span></div>
+    <div className="buffet-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.title, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><a className="text-link" href="#buffet-menu-card">{localize(lunchBuffet.viewMenu, lang)}</a></div></div>
+    <div className="buffet-prices"><span>{localize(lunchBuffet.days, lang)} · {lunchBuffet.time}</span><p><small>{localize(lunchBuffet.adultLabel, lang)}</small><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><small>{localize(lunchBuffet.childLabel, lang)}</small><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div>
   </div></section>;
 }
 
@@ -282,11 +305,16 @@ function CartDialog() {
 
 function ReservationDialog() {
   const { t } = useTheme();
-  const { isReservationOpen, setIsReservationOpen, selectedTableForBooking, setSelectedTableForBooking, open360View, addReservation } = useApp();
+  const { isReservationOpen, setIsReservationOpen, reservationIntent, setReservationIntent, selectedTableForBooking, setSelectedTableForBooking, open360View, addReservation } = useApp();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ date: '', time: '19:30', party: 2, guestName: '', guestPhone: '', notes: '' });
   const [error, setError] = useState('');
   const [reference, setReference] = useState('');
+  useEffect(() => {
+    if (!isReservationOpen || !reservationIntent) return;
+    setForm((current) => ({ ...current, notes: reservationIntent }));
+    setReservationIntent('');
+  }, [isReservationOpen, reservationIntent, setReservationIntent]);
   const close = () => { setIsReservationOpen(false); setTimeout(() => { setStep(1); setError(''); setReference(''); setSelectedTableForBooking(null); }, 250); };
   const next = () => {
     if (step === 1 && !form.date) { setError(t('required')); return; }
@@ -344,10 +372,31 @@ void LegacyCartDialog;
 void LegacyPanoramaDialog;
 void LegacyProfileDialog;
 
+function BuffetCampaignModal({ open, onClose }) {
+  const { lang } = useTheme();
+  const { setIsReservationOpen, setReservationIntent } = useApp();
+  const reserve = () => { setReservationIntent(`${localize(lunchBuffet.title, lang)} · ${localize(lunchBuffet.days, lang)} · ${lunchBuffet.time}`); onClose(); setIsReservationOpen(true); };
+  const viewMenu = () => { onClose(); window.setTimeout(() => document.getElementById('buffet-menu-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 220); };
+  return <Modal open={open} onClose={onClose} title={localize(lunchBuffet.popupTitle, lang)} size="large" className="buffet-campaign-modal"><div className="buffet-modal-art"><img src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=1400&q=88" width="1400" height="1000" alt="Arshida lunch buffet" /><span><b>11:30</b><i />15:30</span></div><div className="buffet-modal-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.popupTitle, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-modal-schedule"><CalendarDays /><span>{localize(lunchBuffet.days, lang)}</span><strong>{lunchBuffet.time}</strong></div><div className="buffet-modal-prices"><p><span>{localize(lunchBuffet.adultLabel, lang)}</span><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><span>{localize(lunchBuffet.childLabel, lang)}</span><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div><div className="buffet-modal-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><button className="button button-quiet" onClick={viewMenu}>{localize(lunchBuffet.viewMenu, lang)}</button></div></div></Modal>;
+}
+
 function MainContent() {
   const { layoutMode } = useTheme();
-  const home = <><Navbar /><main id="main">{layoutMode === 'cinematic' ? <CinematicHero /> : <EditorialHero />}<MenuSection /><StorySection /><ExperienceSection /><EventsSection /><Newsletter /></main><Footer /></>;
-  return <div className="app-shell"><CinematicLoader /><Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}><Routes><Route path="/" element={home} /><Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} /><Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} /><Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} /><Route path="/restaurant" element={<RestaurantWorkspace />} /><Route path="*" element={home} /></Routes></Suspense><DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog /><div className="sr-only" aria-live="polite" /></div>;
+  const location = useLocation();
+  const [introComplete, setIntroComplete] = useState(false);
+  const [buffetCampaignOpen, setBuffetCampaignOpen] = useState(false);
+  const finishIntro = useCallback(() => setIntroComplete(true), []);
+  const closeBuffetCampaign = useCallback(() => setBuffetCampaignOpen(false), []);
+  useEffect(() => {
+    if (!introComplete || location.pathname !== '/' || sessionStorage.getItem('arshida-buffet-seen')) return undefined;
+    const timer = window.setTimeout(() => {
+      sessionStorage.setItem('arshida-buffet-seen', '1');
+      setBuffetCampaignOpen(true);
+    }, 520);
+    return () => window.clearTimeout(timer);
+  }, [introComplete, location.pathname]);
+  const home = <><Navbar /><main id="main">{layoutMode === 'cinematic' ? <CinematicHero /> : <EditorialHero />}<MenuSection /><BuffetSection /><StorySection /><ExperienceSection /><EventsSection /><Newsletter /></main><Footer /></>;
+  return <div className="app-shell"><CinematicLoader onComplete={finishIntro} /><Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}><Routes><Route path="/" element={home} /><Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} /><Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} /><Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} /><Route path="/restaurant" element={<RestaurantWorkspace />} /><Route path="*" element={home} /></Routes></Suspense><BuffetCampaignModal open={buffetCampaignOpen} onClose={closeBuffetCampaign} /><DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog /><div className="sr-only" aria-live="polite" /></div>;
 }
 
 export default function App() {

@@ -2,6 +2,7 @@ const text = (de, en, fa, ar) => ({ de, en, fa, ar });
 
 export const categories = [
   { id: 'all', label: text('Alle', 'All', 'همه', 'الكل') },
+  { id: 'buffet', label: text('Lunchbuffet', 'Lunch buffet', 'بوفه ناهار', 'بوفيه الغداء') },
   { id: 'signature', label: text('Signaturen', 'Signatures', 'منتخب سرآشپز', 'توقيع الشيف') },
   { id: 'main', label: text('Hauptgänge', 'Main courses', 'غذای اصلی', 'الأطباق الرئيسية') },
   { id: 'starter', label: text('Vorspeisen', 'Starters', 'پیش‌غذا', 'المقبلات') },

@@ -45,6 +45,27 @@ export const eventDetails = events.map((event, index) => ({
 
 export const panoramaUrl = '/table-panorama-arshida-v2.png';
 
+export const lunchBuffet = {
+  id: 'weekday-lunch-buffet',
+  days: text('Montag–Freitag', 'Monday–Friday', 'دوشنبه تا جمعه', 'الاثنين–الجمعة'),
+  time: '11:30–15:30',
+  adultPrice: 12.5,
+  childPrice: 8.99,
+  eyebrow: text('Arshida am Mittag', 'Arshida at noon', 'آرشیدا در نیمروز', 'أرشيدا وقت الظهيرة'),
+  title: text('Der Mittagstisch wird zur offenen Tafel.', 'Lunch becomes an open table.', 'ناهار، به یک سفره باز تبدیل می‌شود.', 'الغداء يتحول إلى مائدة مفتوحة.'),
+  description: text(
+    'Warme Gerichte, frische Salate und persische Akzente – frei zusammengestellt und jeden Werktag neu komponiert.',
+    'Warm dishes, fresh salads and Persian accents — freely combined and newly composed every weekday.',
+    'غذاهای گرم، سالادهای تازه و طعم‌های ایرانی؛ انتخاب آزاد و ترکیبی تازه برای هر روز کاری.',
+    'أطباق دافئة وسلطات طازجة ولمسات فارسية — اختيارات حرة وتشكيلة متجددة كل يوم عمل.'
+  ),
+  adultLabel: text('Erwachsene', 'Adults', 'بزرگسالان', 'البالغون'),
+  childLabel: text('Kinder unter 12', 'Children under 12', 'کودکان زیر ۱۲ سال', 'الأطفال دون 12 عاماً'),
+  reserve: text('Buffet-Tisch reservieren', 'Reserve a buffet table', 'رزرو میز بوفه', 'احجز طاولة البوفيه'),
+  viewMenu: text('Im Menü ansehen', 'View in the menu', 'مشاهده در منو', 'عرضه في القائمة'),
+  popupTitle: text('Mittag in Berlin, neu serviert.', 'Berlin lunch, served differently.', 'ناهار برلین، با روایتی تازه.', 'غداء برلين، بأسلوب مختلف.'),
+};
+
 export const rewards = [
   { id: 'dessert', points: 250, title: text('Dessert des Küchenchefs', 'Chef’s dessert', 'دسر ویژه سرآشپز', 'حلوى الشيف') },
   { id: 'pairing', points: 450, title: text('Alkoholfreie Begleitung', 'Alcohol-free pairing', 'نوشیدنی همراه بدون الکل', 'مشروبات مرافقة بلا كحول') },
