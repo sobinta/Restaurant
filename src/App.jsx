@@ -1,10 +1,10 @@
-import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCircle2, ChefHat,
   Camera, ChevronDown, CircleAlert, Clock3, Eye, Globe2, LayoutTemplate,
-  Mail, MapPin, Menu, Minus, Palette, Phone, Plus, Search, Send, ShoppingBag,
-  Sparkles, Star, Trash2, UserRound, Users, X,
+  House, Mail, MapPin, Minus, Palette, Phone, Plus, Search, Send, ShoppingBag,
+  Sparkles, Star, Trash2, UserRound, Users, UtensilsCrossed, X,
 } from 'lucide-react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AppProvider, useApp } from './context/AppContext';
@@ -63,21 +63,29 @@ function Modal({ open, onClose, title, children, size = 'medium', className = ''
   );
 }
 
-function AppearancePanel({ onClose }) {
+function AppearanceControls({ includeLanguage = false }) {
   const { t, themeId, setThemeId, themeOptions, layoutMode, setLayoutMode } = useTheme();
   const dark = themeOptions.filter((item) => item.family === 'dark');
   const light = themeOptions.filter((item) => item.family === 'light');
   return (
-    <div className="appearance-panel" role="dialog" aria-label={t('appearance')}>
-      <div className="panel-heading"><div><span className="eyebrow">{t('appearance')}</span><h3>{t('siteLayout')}</h3></div><button className="icon-button" onClick={onClose} aria-label={t('close')}><X size={18} /></button></div>
+    <div className="appearance-controls">
       <div className="layout-switch" aria-label={t('siteLayout')}>
         <button className={layoutMode === 'cinematic' ? 'active' : ''} onClick={() => setLayoutMode('cinematic')}><Sparkles size={16} />{t('cinematic')}</button>
         <button className={layoutMode === 'editorial' ? 'active' : ''} onClick={() => setLayoutMode('editorial')}><LayoutTemplate size={16} />{t('editorial')}</button>
       </div>
       <ThemeRows title={t('darkThemes')} items={dark} themeId={themeId} setThemeId={setThemeId} />
       <ThemeRows title={t('lightThemes')} items={light} themeId={themeId} setThemeId={setThemeId} />
+      {includeLanguage && <LanguageChoices />}
     </div>
   );
+}
+
+function AppearancePanel({ onClose }) {
+  const { t } = useTheme();
+  return <div className="appearance-panel" role="dialog" aria-label={t('appearance')}>
+    <div className="panel-heading"><div><span className="eyebrow">{t('appearance')}</span><h3>{t('siteLayout')}</h3></div><button className="icon-button" onClick={onClose} aria-label={t('close')}><X size={18} /></button></div>
+    <AppearanceControls />
+  </div>;
 }
 
 function ThemeRows({ title, items, themeId, setThemeId }) {
@@ -98,13 +106,47 @@ function LanguageMenu({ compact = false }) {
   </div>;
 }
 
+function LanguageChoices() {
+  const { lang, toggleLanguage, t } = useTheme();
+  const languages = [['de', 'DE', 'Deutsch'], ['en', 'EN', 'English'], ['fa', 'FA', 'فارسی'], ['ar', 'AR', 'العربية']];
+  return <div className="sheet-language"><span className="field-label">{t('language')}</span><div>{languages.map(([code, short, name]) => <button key={code} className={lang === code ? 'active' : ''} onClick={() => toggleLanguage(code)} aria-pressed={lang === code}><b>{short}</b><span>{name}</span>{lang === code && <Check />}</button>)}</div></div>;
+}
+
+function MobileAppearanceSheet({ open, onClose }) {
+  const { t } = useTheme();
+  return <Modal open={open} onClose={onClose} title={t('appearance')} size="bottom" className="mobile-appearance-sheet">
+    <div className="mobile-sheet-handle" aria-hidden="true" />
+    <header className="mobile-sheet-heading"><span className="eyebrow">ARSHIDA · PERSONAL</span><h2>{t('appearance')}</h2><p>{t('siteLayout')} · 8 {t('theme')}</p></header>
+    <AppearanceControls includeLanguage />
+  </Modal>;
+}
+
+function MobileBottomNav({ count, onReserve, onOrder, onAppearance }) {
+  const { t, lang } = useTheme();
+  const homeLabel = { de: 'Start', en: 'Home', fa: 'خانه', ar: 'الرئيسية' }[lang];
+  return <nav className="mobile-bottom-nav" aria-label={t('mobileMenu')}>
+    <a href="/#top"><House /><span>{homeLabel}</span></a>
+    <a href="/#menu"><UtensilsCrossed /><span>{t('navMenu')}</span></a>
+    <button className="mobile-reserve-action" onClick={onReserve}><span><CalendarDays /></span><b>{t('book')}</b></button>
+    <button onClick={onOrder}><span className="mobile-nav-icon"><ShoppingBag />{count > 0 && <i>{count}</i>}</span><span>{t('cart')}</span></button>
+    <button onClick={onAppearance} aria-haspopup="dialog"><Palette /><span>{t('appearance')}</span></button>
+  </nav>;
+}
+
 function Navbar() {
   const { t, branding } = useTheme();
   const { cart, setIsCartOpen, setIsReservationOpen, setIsProfileOpen } = useApp();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileAppearanceOpen, setMobileAppearanceOpen] = useState(false);
+  const closeMobileAppearance = useCallback(() => setMobileAppearanceOpen(false), []);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const nav = [['#menu', t('navMenu')], ['#experience', t('navExperience')], ['#journal', t('navStories')], ['#events', t('navEvents')]];
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 761px)');
+    const closeOnDesktop = (event) => event.matches && setMobileAppearanceOpen(false);
+    media.addEventListener('change', closeOnDesktop);
+    return () => media.removeEventListener('change', closeOnDesktop);
+  }, []);
   return <>
     <a className="skip-link" href="#main">{t('skip')}</a>
     <header className="site-header">
@@ -116,10 +158,10 @@ function Navbar() {
         <button className="icon-button" onClick={() => setIsProfileOpen(true)} aria-label={t('profile')}><UserRound size={19} /></button>
         <button className="icon-button cart-trigger" onClick={() => setIsCartOpen(true)} aria-label={t('cart')}><ShoppingBag size={19} />{count > 0 && <span>{count}</span>}</button>
         <button className="button button-primary header-book" onClick={() => setIsReservationOpen(true)}><CalendarDays size={17} />{t('book')}</button>
-        <button className="icon-button mobile-trigger" onClick={() => setMobileOpen((value) => !value)} aria-label={t('mobileMenu')}><Menu size={21} /></button>
       </div>
-      {mobileOpen && <div className="mobile-nav">{nav.map(([href, label]) => <a key={href} href={href} onClick={() => setMobileOpen(false)}>{label}<IconArrow /></a>)}<div className="mobile-nav-tools"><LanguageMenu /><button onClick={() => { setAppearanceOpen(true); setMobileOpen(false); }}><Palette size={18} />{t('appearance')}</button></div></div>}
     </header>
+    <MobileBottomNav count={count} onReserve={() => setIsReservationOpen(true)} onOrder={() => setIsCartOpen(true)} onAppearance={() => setMobileAppearanceOpen(true)} />
+    <MobileAppearanceSheet open={mobileAppearanceOpen} onClose={closeMobileAppearance} />
   </>;
 }
 
