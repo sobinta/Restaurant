@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AppProvider, useApp } from './context/AppContext';
+import { AuthProvider } from './auth/AuthProvider';
 import { categories, localize, tables } from './data/siteData';
 import { enrichedDishes as dishes, eventDetails as events, lunchBuffet, orderStatusCopy, pageCopy, rewards } from './data/platformData';
 import CinematicLoader from './components/CinematicLoader';
@@ -18,6 +19,11 @@ const DishPage = lazy(() => import('./pages/DishPage'));
 const EventPage = lazy(() => import('./pages/EventPage'));
 const LiveOrderPage = lazy(() => import('./pages/LiveOrderPage'));
 const RestaurantWorkspace = lazy(() => import('./pages/RestaurantWorkspace'));
+const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
+const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
 
 const IconArrow = ({ className = '' }) => {
   const { isRtl } = useTheme();
@@ -396,9 +402,9 @@ function MainContent() {
     return () => window.clearTimeout(timer);
   }, [introComplete, location.pathname]);
   const home = <><Navbar /><main id="main">{layoutMode === 'cinematic' ? <CinematicHero /> : <EditorialHero />}<BuffetSection /><MenuSection /><StorySection /><ExperienceSection /><EventsSection /><Newsletter /></main><Footer /></>;
-  return <div className="app-shell"><CinematicLoader onComplete={finishIntro} /><Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}><Routes><Route path="/" element={home} /><Route path="/menu" element={<><Navbar /><MenuPage /><Footer /></>} /><Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} /><Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} /><Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} /><Route path="/restaurant" element={<RestaurantWorkspace />} /><Route path="*" element={home} /></Routes></Suspense><BuffetCampaignModal open={buffetCampaignOpen} onClose={closeBuffetCampaign} /><DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog /><div className="sr-only" aria-live="polite" /></div>;
+  return <div className="app-shell">{location.pathname === '/' && <CinematicLoader onComplete={finishIntro} />}<Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}><Routes><Route path="/" element={home} /><Route path="/menu" element={<><Navbar /><MenuPage /><Footer /></>} /><Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} /><Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} /><Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} /><Route path="/restaurant" element={<RestaurantWorkspace />} /><Route path="/auth/login" element={<LoginPage />} /><Route path="/auth/register" element={<RegisterPage />} /><Route path="/auth/forgot-password" element={<ForgotPasswordPage />} /><Route path="/auth/reset-password" element={<ResetPasswordPage />} /><Route path="/auth/callback" element={<AuthCallbackPage />} /><Route path="*" element={home} /></Routes></Suspense><BuffetCampaignModal open={buffetCampaignOpen} onClose={closeBuffetCampaign} /><DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog /><div className="sr-only" aria-live="polite" /></div>;
 }
 
 export default function App() {
-  return <ThemeProvider><AppProvider><MainContent /></AppProvider></ThemeProvider>;
+  return <ThemeProvider><AuthProvider><AppProvider><MainContent /></AppProvider></AuthProvider></ThemeProvider>;
 }
