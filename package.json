@@ -12,6 +12,7 @@
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.15.1",
     "@photo-sphere-viewer/markers-plugin": "^5.15.1",
+    "@supabase/supabase-js": "^2.112.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.28.0",
     "qrcode": "^1.5.4",
