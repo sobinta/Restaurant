@@ -7,6 +7,11 @@ const CHANNEL_KEY = 'arshida-live-platform';
 
 export const ORDER_STATUSES = ['submitted', 'confirmed', 'preparing', 'cooking', 'quality_check', 'ready', 'courier_handoff', 'completed'];
 
+export function getOrderStatuses(orderOrType) {
+  const type = typeof orderOrType === 'string' ? orderOrType : orderOrType?.type;
+  return type === 'delivery' ? ORDER_STATUSES : ORDER_STATUSES.filter((status) => status !== 'courier_handoff');
+}
+
 const now = () => new Date().toISOString();
 const seedOrder = {
   id: 'ORD-2048', type: 'delivery', status: 'cooking', total: 84, estimate: '20–25 min', createdAt: now(),
@@ -31,10 +36,22 @@ const GUESTS = [
   { id: 'CRM-103', name: 'Sara Rahimi', tier: 'Silver', visits: 7, total: '€1,290', note: 'Anniversary in October' },
 ];
 
+function normalizePlatform(data) {
+  if (!data) return seedState;
+  return {
+    ...data,
+    orders: (data.orders || []).map((order) => order.type !== 'delivery' ? {
+      ...order,
+      status: order.status === 'courier_handoff' ? 'ready' : order.status,
+      history: (order.history || []).filter((entry) => entry.status !== 'courier_handoff'),
+    } : order),
+  };
+}
+
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved?.version === 2 ? { ...seedState, ...saved.data } : seedState;
+    return saved?.version === 2 ? normalizePlatform({ ...seedState, ...saved.data }) : seedState;
   } catch { return seedState; }
 }
 
@@ -84,7 +101,7 @@ export function AppProvider({ children }) {
     if (!('BroadcastChannel' in window)) return undefined;
     const channel = new BroadcastChannel(CHANNEL_KEY);
     channelRef.current = channel;
-    channel.onmessage = (event) => event.data?.type === 'state' && setPlatform(event.data.data);
+    channel.onmessage = (event) => event.data?.type === 'state' && setPlatform(normalizePlatform(event.data.data));
     return () => { channel.close(); channelRef.current = null; };
   }, []);
 
@@ -124,9 +141,10 @@ export function AppProvider({ children }) {
 
   const updateOrderStatus = useCallback((orderId, status, message = '') => {
     if (!ORDER_STATUSES.includes(status)) return false;
-    publish((current) => ({ ...current, orders: current.orders.map((order) => order.id === orderId ? {
-      ...order, status, message, history: [...order.history, { status, at: now(), message }],
-    } : order) }), `order:status:${orderId}:${status}`);
+    publish((current) => ({ ...current, orders: current.orders.map((order) => {
+      if (order.id !== orderId || !getOrderStatuses(order).includes(status)) return order;
+      return { ...order, status, message, history: [...order.history, { status, at: now(), message }] };
+    }) }), `order:status:${orderId}:${status}`);
     return true;
   }, [publish]);
 

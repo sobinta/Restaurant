@@ -83,6 +83,17 @@ export const orderStatusCopy = {
   completed: text('Zugestellt', 'Delivered', 'تحویل داده شد', 'تم التسليم'),
 };
 
+export const orderStatusByTypeCopy = {
+  pickup: {
+    ready: text('Zur Abholung im Restaurant bereit', 'Ready for pickup at the restaurant', 'آماده دریافت از رستوران', 'جاهز للاستلام من المطعم'),
+    completed: text('Vom Gast abgeholt', 'Picked up by the customer', 'توسط مشتری تحویل گرفته شد', 'استلمه العميل'),
+  },
+  dinein: {
+    ready: text('Bereit zum Servieren', 'Ready to serve', 'آماده سرو', 'جاهز للتقديم'),
+    completed: text('Am Tisch serviert', 'Served at the table', 'روی میز سرو شد', 'تم تقديمه على الطاولة'),
+  },
+};
+
 export const pageCopy = {
   back: text('Zurück', 'Back', 'بازگشت', 'رجوع'), favorite: text('Merken', 'Save', 'ذخیره', 'حفظ'), share: text('Teilen', 'Share', 'اشتراک‌گذاری', 'مشاركة'),
   menuArchive: text('Die Speisekarte', 'The full menu', 'فهرست کامل منو', 'القائمة الكاملة'),
@@ -112,6 +123,18 @@ export const pageCopy = {
   liveSignal: text('Live-Signal', 'Live signal', 'سیگنال زنده', 'إشارة مباشرة'),
   liveEstimate: text('Aktuelle Schätzung', 'Live estimate', 'زمان تخمینی زنده', 'الوقت التقديري المباشر'),
   lastUpdated: text('Zuletzt aktualisiert', 'Last updated', 'آخرین به‌روزرسانی', 'آخر تحديث'),
+  orderDossier: text('Bestelldossier', 'Order dossier', 'پرونده سفارش', 'ملف الطلب'),
+  orderDate: text('Datum', 'Date', 'تاریخ', 'التاريخ'),
+  orderTime: text('Uhrzeit', 'Time', 'ساعت', 'الوقت'),
+  fulfilment: text('Übergabe', 'Fulfilment', 'نوع تحویل', 'طريقة الاستلام'),
+  restaurantLocation: text('Restaurant', 'Restaurant', 'آدرس رستوران', 'المطعم'),
+  deliveryLocation: text('Lieferadresse', 'Delivery address', 'آدرس تحویل', 'عنوان التوصيل'),
+  orderedDishes: text('Bestellte Gerichte', 'Ordered dishes', 'غذاهای سفارش داده‌شده', 'الأطباق المطلوبة'),
+  deliveryType: text('Lieferung', 'Delivery', 'ارسال با پیک', 'توصيل'),
+  pickupType: text('Abholung', 'Pickup', 'دریافت حضوری', 'استلام من المطعم'),
+  dineinType: text('Service am Tisch', 'Table service', 'سرو روی میز', 'خدمة الطاولة'),
+  tableLabel: text('Tisch', 'Table', 'میز', 'الطاولة'),
+  unavailable: text('Nicht verfügbar', 'Not available', 'در دسترس نیست', 'غير متوفر'),
   restaurant: text('Restaurant Workspace', 'Restaurant workspace', 'پنل رستوران', 'مساحة إدارة المطعم'),
   skipIntro: text('Intro überspringen', 'Skip intro', 'رد کردن مقدمه', 'تخطي المقدمة'),
 };
