@@ -2,6 +2,7 @@
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getPublicAppUrl, supabaseConfig } from '../lib/env';
 import { supabase } from '../lib/supabase';
+import { useMembershipRealtime } from '../realtime/useMembershipRealtime';
 
 export const AuthContext = createContext(null);
 
@@ -101,6 +102,8 @@ export function AuthProvider({ children }) {
     signOut: () => supabase ? supabase.auth.signOut({ scope: 'local' }) : unavailable(),
     refreshAccess: () => loadAccess(session),
   }), [loadAccess, redirectTo, session, unavailable]);
+
+  useMembershipRealtime(session?.user?.id, () => loadAccess(session));
 
   const value = useMemo(() => ({
     configured: supabaseConfig.configured,
