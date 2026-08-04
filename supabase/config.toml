@@ -34,8 +34,9 @@ file_size_limit = "50MiB"
 
 [auth]
 enabled = true
-site_url = "https://restaurant-pt8ywxd9e-sobinta-s-projects.vercel.app"
+site_url = "https://restaurant-one-nu-42.vercel.app"
 additional_redirect_urls = [
+  "https://restaurant-one-nu-42.vercel.app/**",
   "https://restaurant-pt8ywxd9e-sobinta-s-projects.vercel.app/**",
   "http://localhost:43127/**",
   "http://127.0.0.1:43127/**"
