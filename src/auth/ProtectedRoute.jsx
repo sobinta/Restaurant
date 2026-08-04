@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { authPath } from './authRoutes';
+import { hasWorkspaceRole } from './workspaceAccess';
 
 export default function ProtectedRoute({ children, roles = [], globalOnly = false }) {
   const auth = useAuth();
@@ -13,7 +14,5 @@ export default function ProtectedRoute({ children, roles = [], globalOnly = fals
   if (auth.status === 'suspended') return <Navigate replace to="/forbidden?reason=suspended" />;
   if (!roles.length) return children;
 
-  const hasGlobalRole = roles.some((role) => auth.globalRoles.includes(role));
-  const membership = !globalOnly && auth.memberships.find((item) => item.branchId === branchId && item.roles.some((role) => roles.includes(role)));
-  return hasGlobalRole || membership ? children : <Navigate replace to="/forbidden" />;
+  return hasWorkspaceRole(auth, branchId, roles, globalOnly) ? children : <Navigate replace to="/forbidden" />;
 }
