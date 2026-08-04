@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "admin:bootstrap": "node scripts/bootstrap-initial-admin.mjs"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.15.1",
     "@photo-sphere-viewer/markers-plugin": "^5.15.1",
+    "@supabase/supabase-js": "^2.112.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.28.0",
     "qrcode": "^1.5.4",
@@ -26,6 +29,7 @@
     "@vitejs/plugin-react": "^6.0.4",
     "oxlint": "^1.75.0",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10"
   }
 }

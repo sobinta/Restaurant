@@ -1,0 +1,80 @@
+project_id = "arshida-restaurant"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "https://restaurant-one-nu-42.vercel.app"
+additional_redirect_urls = [
+  "https://restaurant-one-nu-42.vercel.app/**",
+  "https://restaurant-pt8ywxd9e-sobinta-s-projects.vercel.app/**",
+  "http://localhost:43127/**",
+  "http://127.0.0.1:43127/**"
+]
+jwt_expiry = 3600
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 8
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "1m"
+otp_length = 6
+otp_expiry = 3600
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+
+[functions.invite-staff-member]
+verify_jwt = false
+
+[functions.accept-staff-invitation]
+verify_jwt = false
+
+[functions.update-member-roles]
+verify_jwt = false
+
+[functions.suspend-branch-member]
+verify_jwt = false
+
+[functions.register-push-subscription]
+verify_jwt = false
