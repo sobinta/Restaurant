@@ -9,6 +9,8 @@ import {
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AppProvider, useApp } from './context/AppContext';
 import { AuthProvider } from './auth/AuthProvider';
+import ProtectedRoute from './auth/ProtectedRoute';
+import { authCopy } from './auth/authCopy';
 import { categories, localize, tables } from './data/siteData';
 import { enrichedDishes as dishes, eventDetails as events, lunchBuffet, orderStatusCopy, pageCopy, rewards } from './data/platformData';
 import CinematicLoader from './components/CinematicLoader';
@@ -24,6 +26,10 @@ const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
 const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
+const AccountPage = lazy(() => import('./pages/account/AccountPage'));
+const WorkspaceSelectorPage = lazy(() => import('./pages/workspace/WorkspaceSelectorPage'));
+const WorkspaceShell = lazy(() => import('./pages/workspace/WorkspaceShell'));
+const ForbiddenPage = lazy(() => import('./pages/workspace/ForbiddenPage'));
 
 const IconArrow = ({ className = '' }) => {
   const { isRtl } = useTheme();
@@ -119,16 +125,7 @@ function LanguageChoices() {
   return <div className="sheet-language"><span className="field-label">{t('language')}</span><div>{languages.map(([code, short, name]) => <button key={code} className={lang === code ? 'active' : ''} onClick={() => toggleLanguage(code)} aria-pressed={lang === code}><b>{short}</b><span>{name}</span>{lang === code && <Check />}</button>)}</div></div>;
 }
 
-function MobileAppearanceSheet({ open, onClose }) {
-  const { t } = useTheme();
-  return <Modal open={open} onClose={onClose} title={t('appearance')} size="bottom" className="mobile-appearance-sheet">
-    <div className="mobile-sheet-handle" aria-hidden="true" />
-    <header className="mobile-sheet-heading"><span className="eyebrow">ARSHIDA · PERSONAL</span><h2>{t('appearance')}</h2><p>{t('siteLayout')} · 8 {t('theme')}</p></header>
-    <AppearanceControls includeLanguage />
-  </Modal>;
-}
-
-function MobileBottomNav({ count, onReserve, onOrder, onAppearance }) {
+function MobileBottomNav({ count, onReserve, onOrder, onAccount }) {
   const { t, lang } = useTheme();
   const homeLabel = { de: 'Start', en: 'Home', fa: 'خانه', ar: 'الرئيسية' }[lang];
   return <nav className="mobile-bottom-nav" aria-label={t('mobileMenu')}>
@@ -136,24 +133,17 @@ function MobileBottomNav({ count, onReserve, onOrder, onAppearance }) {
     <a href="/#menu"><UtensilsCrossed /><span>{t('navMenu')}</span></a>
     <button className="mobile-reserve-action" onClick={onReserve}><span><CalendarDays /></span><b>{t('book')}</b></button>
     <button onClick={onOrder}><span className="mobile-nav-icon"><ShoppingBag />{count > 0 && <i>{count}</i>}</span><span>{t('cart')}</span></button>
-    <button onClick={onAppearance} aria-haspopup="dialog"><Palette /><span>{t('appearance')}</span></button>
+    <button onClick={onAccount}><UserRound /><span>{(authCopy[lang] || authCopy.en).account}</span></button>
   </nav>;
 }
 
 function Navbar() {
   const { t, branding, lang } = useTheme();
-  const { cart, setIsCartOpen, setIsReservationOpen, setIsProfileOpen } = useApp();
+  const { cart, setIsCartOpen, setIsReservationOpen } = useApp();
+  const navigate = useNavigate();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
-  const [mobileAppearanceOpen, setMobileAppearanceOpen] = useState(false);
-  const closeMobileAppearance = useCallback(() => setMobileAppearanceOpen(false), []);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const nav = [['/#menu', t('navMenu')], ['/#lunch-buffet', localize(categories.find((item) => item.id === 'buffet').label, lang)], ['/#experience', t('navExperience')], ['/#journal', t('navStories')], ['/#events', t('navEvents')]];
-  useEffect(() => {
-    const media = window.matchMedia('(min-width: 761px)');
-    const closeOnDesktop = (event) => event.matches && setMobileAppearanceOpen(false);
-    media.addEventListener('change', closeOnDesktop);
-    return () => media.removeEventListener('change', closeOnDesktop);
-  }, []);
   return <>
     <a className="skip-link" href="#main">{t('skip')}</a>
     <header className="site-header">
@@ -162,13 +152,12 @@ function Navbar() {
       <div className="header-actions">
         <LanguageMenu />
         <div className="appearance-anchor"><button className="nav-tool" onClick={() => setAppearanceOpen((value) => !value)} aria-expanded={appearanceOpen}><Palette size={18} /><span>{t('appearance')}</span></button>{appearanceOpen && <AppearancePanel onClose={() => setAppearanceOpen(false)} />}</div>
-        <button className="icon-button" onClick={() => setIsProfileOpen(true)} aria-label={t('profile')}><UserRound size={19} /></button>
+        <button className="icon-button" onClick={() => navigate('/account')} aria-label={(authCopy[lang] || authCopy.en).account}><UserRound size={19} /></button>
         <button className="icon-button cart-trigger" onClick={() => setIsCartOpen(true)} aria-label={t('cart')}><ShoppingBag size={19} />{count > 0 && <span>{count}</span>}</button>
         <button className="button button-primary header-book" onClick={() => setIsReservationOpen(true)}><CalendarDays size={17} />{t('book')}</button>
       </div>
     </header>
-    <MobileBottomNav count={count} onReserve={() => setIsReservationOpen(true)} onOrder={() => setIsCartOpen(true)} onAppearance={() => setMobileAppearanceOpen(true)} />
-    <MobileAppearanceSheet open={mobileAppearanceOpen} onClose={closeMobileAppearance} />
+    <MobileBottomNav count={count} onReserve={() => setIsReservationOpen(true)} onOrder={() => setIsCartOpen(true)} onAccount={() => navigate('/account')} />
   </>;
 }
 
@@ -402,7 +391,37 @@ function MainContent() {
     return () => window.clearTimeout(timer);
   }, [introComplete, location.pathname]);
   const home = <><Navbar /><main id="main">{layoutMode === 'cinematic' ? <CinematicHero /> : <EditorialHero />}<BuffetSection /><MenuSection /><StorySection /><ExperienceSection /><EventsSection /><Newsletter /></main><Footer /></>;
-  return <div className="app-shell">{location.pathname === '/' && <CinematicLoader onComplete={finishIntro} />}<Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}><Routes><Route path="/" element={home} /><Route path="/menu" element={<><Navbar /><MenuPage /><Footer /></>} /><Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} /><Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} /><Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} /><Route path="/restaurant" element={<RestaurantWorkspace />} /><Route path="/auth/login" element={<LoginPage />} /><Route path="/auth/register" element={<RegisterPage />} /><Route path="/auth/forgot-password" element={<ForgotPasswordPage />} /><Route path="/auth/reset-password" element={<ResetPasswordPage />} /><Route path="/auth/callback" element={<AuthCallbackPage />} /><Route path="*" element={home} /></Routes></Suspense><BuffetCampaignModal open={buffetCampaignOpen} onClose={closeBuffetCampaign} /><DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog /><div className="sr-only" aria-live="polite" /></div>;
+  return <div className="app-shell">
+    {location.pathname === '/' && <CinematicLoader onComplete={finishIntro} />}
+    <Suspense fallback={<div className="route-loading"><span>A</span><p>Composing your experience…</p></div>}>
+      <Routes>
+        <Route path="/" element={home} />
+        <Route path="/menu" element={<><Navbar /><MenuPage /><Footer /></>} />
+        <Route path="/menu/:slug" element={<><Navbar /><DishPage /><Footer /></>} />
+        <Route path="/events/:slug" element={<><Navbar /><EventPage /><Footer /></>} />
+        <Route path="/order/:orderId" element={<><Navbar /><LiveOrderPage /><Footer /></>} />
+        <Route path="/restaurant" element={<RestaurantWorkspace />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+        <Route path="/account/profile" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+        <Route path="/workspaces" element={<ProtectedRoute><WorkspaceSelectorPage /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/owner" element={<ProtectedRoute roles={['manager', 'superadmin']}><WorkspaceShell role="manager" /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/waiter" element={<ProtectedRoute roles={['waiter', 'superadmin']}><WorkspaceShell role="waiter" /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/kitchen" element={<ProtectedRoute roles={['kitchen', 'superadmin']}><WorkspaceShell role="kitchen" /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/cashier" element={<ProtectedRoute roles={['cashier', 'superadmin']}><WorkspaceShell role="cashier" /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/delivery" element={<ProtectedRoute roles={['delivery', 'superadmin']}><WorkspaceShell role="delivery" /></ProtectedRoute>} />
+        <Route path="/forbidden" element={<ForbiddenPage />} />
+        <Route path="*" element={home} />
+      </Routes>
+    </Suspense>
+    <BuffetCampaignModal open={buffetCampaignOpen} onClose={closeBuffetCampaign} />
+    <DishDialog /><CartDialog /><ReservationDialog /><PanoramaDialog /><ProfileDialog /><AdminDialog />
+    <div className="sr-only" aria-live="polite" />
+  </div>;
 }
 
 export default function App() {
