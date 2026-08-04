@@ -85,6 +85,17 @@ export const orderStatusCopy = {
 
 export const pageCopy = {
   back: text('Zurück', 'Back', 'بازگشت', 'رجوع'), favorite: text('Merken', 'Save', 'ذخیره', 'حفظ'), share: text('Teilen', 'Share', 'اشتراک‌گذاری', 'مشاركة'),
+  menuArchive: text('Die Speisekarte', 'The full menu', 'فهرست کامل منو', 'القائمة الكاملة'),
+  menuArchiveTitle: text('Jeder Gang, auf einen Blick.', 'Every course, at a glance.', 'تمام بشقاب‌ها، در یک نگاه.', 'كل الأطباق، بنظرة واحدة.'),
+  menuArchiveIntro: text('Entdecken, vergleichen und direkt bestellen — mit der Ruhe einer Speisekarte und der Klarheit eines persönlichen Service.', 'Discover, compare and order directly — with the calm of a menu and the clarity of personal service.', 'کشف کنید، مقایسه کنید و مستقیم سفارش دهید؛ با آرامش یک منوی لوکس و وضوح یک سرویس شخصی.', 'اكتشف وقارن واطلب مباشرة — بهدوء قائمة راقية ووضوح خدمة شخصية.'),
+  viewMore: text('Mehr aus dieser Kategorie', 'View more in this category', 'مشاهده موارد بیشتر این دسته', 'عرض المزيد من هذه الفئة'),
+  viewFullMenu: text('Vollständiges Menü', 'View full menu', 'مشاهده منوی کامل', 'عرض القائمة الكاملة'),
+  orderAdded: text('Zur Bestellung hinzugefügt', 'Added to your order', 'به سفارش اضافه شد', 'تمت الإضافة إلى طلبك'),
+  orderPanel: text('Ihre Auswahl', 'Your selection', 'انتخاب شما', 'اختيارك'),
+  cartShortcut: text('Bestellung ansehen', 'View your order', 'مشاهده سفارش', 'عرض طلبك'),
+  clearFilters: text('Filter zurücksetzen', 'Clear filters', 'پاک‌کردن فیلترها', 'مسح عوامل التصفية'),
+  buffetMenuLabel: text('Mittagsritual', 'Midday ritual', 'آیین نیمروز', 'طقوس الظهيرة'),
+  filmIntro: text('Der letzte Blick: Bewegung, Textur und der Moment vor dem Service.', 'A final look: movement, texture and the moment before service.', 'نگاه آخر؛ حرکت، بافت و لحظه‌ای پیش از سرو.', 'نظرة أخيرة: الحركة والملمس واللحظة قبل التقديم.'),
   film: text('Der Film zum Gericht', 'The dish film', 'فیلم کوتاه غذا', 'فيلم الطبق'), gallery: text('In jedem Detail', 'Every detail', 'تمام جزئیات', 'كل التفاصيل'),
   chefStory: text('Die Geschichte des Küchenchefs', 'The chef’s story', 'روایت سرآشپز', 'قصة الشيف'), provenance: text('Herkunft', 'Provenance', 'منشأ مواد', 'المصدر'),
   nutrition: text('Nährwerte', 'Nutrition', 'ارزش غذایی', 'القيمة الغذائية'), allergens: text('Allergene', 'Allergens', 'آلرژن‌ها', 'مسببات الحساسية'), pairing: text('Empfohlene Begleitung', 'Recommended pairing', 'پیشنهاد همراه', 'المرافقة المقترحة'),

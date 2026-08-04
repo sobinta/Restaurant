@@ -123,7 +123,7 @@ p { line-height:1.75;color:var(--text-soft); }
 .mobile-nav { display:none; }
 
 .hero { position:relative;min-height:100svh;padding-top:var(--header-height); }
-.hero-cinematic { display:flex;align-items:flex-end;background:#160e14; }
+.hero-cinematic { display:flex;align-items:flex-end;overflow:hidden;background:#160e14; }
 .hero-photo { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center; }
 .hero-scrim { position:absolute;inset:0;background:var(--hero-scrim); }
 body.is-rtl .hero-scrim { transform:scaleX(-1); }
@@ -402,4 +402,77 @@ body.is-rtl .editorial-intro h1 { line-height:1.08; }
 
 @media (max-width:370px) {
   .buffet-campaign-modal .buffet-modal-actions { flex-direction:column; }.buffet-campaign-modal .buffet-modal-actions .button { width:100%; }
+}
+
+/* Menu discovery and image-first dish ordering */
+.hero-cinematic .hero-photo { object-position:72% center;transform:translateX(7vw); }
+body.is-rtl .hero-cinematic .hero-photo { object-position:28% center;transform:translateX(-7vw); }
+.dish-card-actions { display:grid;grid-template-columns:.8fr 1.2fr;gap:8px;margin-top:18px; }
+.dish-card-actions .button { min-width:0;padding-inline:12px;font-size:10px; }
+.button.success { background:var(--success);border-color:var(--success);color:#07140e; }
+.category-more-links { display:grid;grid-template-columns:1.2fr repeat(4,1fr);border-block:1px solid var(--border);margin-top:45px; }
+.category-more-links>a { min-height:105px;padding:20px;border-inline-end:1px solid var(--border);color:var(--text);display:grid;grid-template-columns:1fr auto;align-content:center;gap:7px;text-decoration:none;transition:background .22s var(--ease),color .22s var(--ease); }
+.category-more-links>a:last-child { border-inline-end:0; }.category-more-links>a:hover { background:var(--surface-2); }.category-more-links>a>span { font:600 19px/1.1 'Cormorant Garamond',serif; }.category-more-links>a>small { grid-column:1;color:var(--muted);font-size:7px;line-height:1.35; }.category-more-links svg { grid-column:2;grid-row:1/3;width:17px;color:var(--accent);align-self:center; }
+.category-more-links .category-more-all { background:var(--text);color:var(--page);font:700 10px/1.3 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase; }.category-more-links .category-more-all svg { color:currentColor; }
+
+.full-menu-page { padding-top:var(--header-height);background:var(--page); }
+.menu-ledger-hero { position:relative;overflow:hidden;padding:90px 0 70px;border-bottom:1px solid var(--border);background:linear-gradient(125deg,var(--surface),var(--page) 62%); }
+.menu-ledger-hero:after { content:'MENU';position:absolute;inset-inline-end:-.04em;bottom:-.2em;color:color-mix(in srgb,var(--accent) 7%,transparent);font:600 clamp(120px,20vw,310px)/.65 'Cormorant Garamond',serif;letter-spacing:-.08em;pointer-events:none; }
+.menu-ledger-intro { position:relative;z-index:1;display:grid;grid-template-columns:1.2fr .8fr;gap:35px 90px;align-items:end; }
+.menu-page-back { grid-column:1/-1;width:max-content;border:0;background:none;color:var(--muted);display:flex;align-items:center;gap:8px;padding:0;cursor:pointer;font:700 9px/1 Manrope; }.menu-page-back svg { width:16px; }
+.menu-ledger-intro h1 { max-width:850px;font-size:clamp(60px,7.6vw,112px);line-height:.83;margin:18px 0 0; }.is-rtl .menu-ledger-intro h1 { line-height:1.08; }
+.menu-ledger-intro>p { max-width:520px;margin:0 0 8px;font-size:14px; }
+.menu-ledger { padding-block:58px 120px; }
+.menu-ledger-tools { position:sticky;z-index:20;top:var(--header-height);display:flex;justify-content:space-between;gap:25px;padding:13px 0;background:color-mix(in srgb,var(--page) 91%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--border); }
+.menu-ledger-rule { display:flex;align-items:center;gap:18px;color:var(--accent);font:700 8px/1 Manrope;letter-spacing:.14em;margin:28px 0 8px; }.menu-ledger-rule i { height:1px;flex:1;background:var(--border-strong); }
+.menu-buffet-row { display:grid;grid-template-columns:260px 1fr 235px;gap:30px;align-items:center;margin:18px 0 32px;padding:13px;border:1px solid var(--border-strong);background:var(--secondary);color:var(--secondary-text); }
+.menu-buffet-image { height:190px;overflow:hidden; }.menu-buffet-image img { width:100%;height:100%;object-fit:cover; }
+.menu-buffet-row .eyebrow { color:color-mix(in srgb,var(--secondary-text) 75%,var(--accent));display:flex;align-items:center;gap:7px; }.menu-buffet-row .eyebrow svg { width:14px; }
+.menu-buffet-row h2 { color:inherit;font-size:39px;margin:11px 0; }.menu-buffet-row p { color:color-mix(in srgb,var(--secondary-text) 72%,transparent);font-size:10px;margin:0;max-width:600px; }
+.menu-buffet-schedule { display:flex;align-items:center;gap:7px;margin-top:15px;font-size:9px; }.menu-buffet-schedule svg { width:15px; }
+.menu-buffet-order { padding:18px;border-inline-start:1px solid color-mix(in srgb,var(--secondary-text) 22%,transparent); }.menu-buffet-order>span,.menu-buffet-order>small { display:block;font-size:8px;color:color-mix(in srgb,var(--secondary-text) 66%,transparent); }.menu-buffet-order>strong { display:block;font:600 37px/1 'Cormorant Garamond',serif;margin:8px 0; }.menu-buffet-order .button { width:100%;margin-top:16px; }
+.menu-ledger-list { border-top:1px solid var(--border); }
+.menu-ledger-row { display:grid;grid-template-columns:34px 130px minmax(260px,1fr) 105px 285px;gap:22px;align-items:center;padding:18px 6px;border-bottom:1px solid var(--border);transition:background .2s,padding .2s var(--ease); }
+.menu-ledger-row:hover { padding-inline:16px;background:var(--surface); }
+.menu-row-index { color:var(--muted);font:700 8px/1 Manrope; }.menu-row-image { display:block;height:96px;overflow:hidden; }.menu-row-image img { width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease); }.menu-ledger-row:hover .menu-row-image img { transform:scale(1.045); }
+.menu-row-copy>span { color:var(--accent);font:700 7px/1 Manrope;letter-spacing:.12em;text-transform:uppercase; }.menu-row-copy h2 { font-size:26px;margin:7px 0 5px; }.menu-row-copy h2 a { color:inherit;text-decoration:none; }.menu-row-copy p { max-width:620px;margin:0;font-size:9px;line-height:1.55; }.menu-row-copy>div { display:flex;gap:13px;margin-top:9px;color:var(--muted);font-size:8px; }.menu-row-copy>div span { display:flex;align-items:center;gap:5px; }.menu-row-copy svg { width:12px;color:var(--accent); }
+.menu-row-price { color:var(--accent);font:600 26px/1 'Cormorant Garamond',serif;white-space:nowrap; }.menu-row-actions { display:grid;grid-template-columns:.75fr 1.25fr;gap:7px; }.menu-row-actions .button { min-width:0;padding-inline:11px;font-size:9px; }
+.menu-empty { min-height:330px;margin-top:20px; }.menu-ledger-cart { display:flex;justify-content:flex-end;align-items:center;gap:18px;padding-top:24px;color:var(--muted);font-size:9px; }
+
+.dish-image-hero { position:relative;height:min(82svh,820px);min-height:650px;overflow:hidden;background:#090a09;color:#fff; }
+.dish-image-hero>img { width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.78) contrast(1.06); }
+.dish-image-scrim { position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,7,.94),rgba(6,7,7,.52) 54%,rgba(6,7,7,.14)),linear-gradient(0deg,rgba(6,7,7,.8),transparent 55%); }.is-rtl .dish-image-scrim { transform:scaleX(-1); }
+.dish-image-copy { position:absolute;z-index:2;inset-inline:0;bottom:10%; }.dish-image-copy .eyebrow { color:#e6c381;display:flex;align-items:center;gap:8px; }.dish-image-copy h1 { color:#fff;font-size:clamp(64px,8.6vw,128px);line-height:.83;max-width:980px;margin:20px 0 25px; }.is-rtl .dish-image-copy h1 { line-height:1.08; }.dish-image-copy>p { max-width:620px;color:rgba(255,255,255,.75);font-size:14px; }.dish-image-copy>div { display:flex;gap:18px;margin-top:25px; }.dish-image-copy>div span { display:flex;align-items:center;gap:6px;font:700 9px/1 Manrope; }.dish-image-copy svg { width:15px;color:#e6c381; }
+.dish-detail-shell { display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:70px;align-items:start;padding-block:100px 135px; }
+.dish-detail-main { min-width:0; }.dish-narrative-v2 { grid-template-columns:65px 1fr;gap:30px;padding:0 0 95px; }.dish-narrative-v2 aside { grid-column:2;margin-top:5px; }
+.dish-gallery-v2 { padding-bottom:95px; }.dish-gallery-v2>img { height:min(56vw,650px); }
+.dish-facts-v2 { grid-template-columns:1fr;gap:55px;padding-block:75px; }
+.dish-film-section { padding-top:90px;border-top:1px solid var(--border); }.dish-film-heading { display:grid;grid-template-columns:1fr 1.3fr;gap:30px;align-items:start;margin-bottom:28px; }.dish-film-heading h2 { font-size:34px;margin:0; }
+.dish-film-frame { position:relative;overflow:hidden;aspect-ratio:16/10;background:#090a09;box-shadow:var(--shadow-lg); }.dish-film-frame video,.dish-film-frame>img { width:100%;height:100%;display:block;object-fit:cover; }.dish-film-frame>span { position:absolute;inset-inline-start:18px;top:18px;display:flex;align-items:center;gap:7px;padding:8px 10px;background:rgba(6,7,7,.68);border:1px solid rgba(255,255,255,.2);color:#fff;font:700 7px/1 Manrope;letter-spacing:.12em;pointer-events:none; }.dish-film-frame>span svg { width:13px; }
+.dish-order-rail { position:sticky;top:calc(var(--header-height) + 24px);align-self:start; }.dish-order-card { padding:28px;border:1px solid var(--border-strong);background:var(--surface-elevated);box-shadow:var(--shadow-lg); }
+.dish-order-title { display:flex;justify-content:space-between;gap:18px;padding:19px 0 23px;border-bottom:1px solid var(--border); }.dish-order-title h2 { font-size:29px;margin:0 0 6px; }.dish-order-title small { color:var(--muted); }.dish-order-title>strong { color:var(--accent);font:600 27px/1 'Cormorant Garamond',serif;white-space:nowrap; }
+.dish-notes { display:block;margin:20px 0; }.dish-notes>span,.dish-order-quantity>span { display:block;color:var(--muted);font-size:8px;font-weight:700;margin-bottom:8px; }.dish-notes textarea { width:100%;resize:vertical;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:12px;outline:0;font:500 10px/1.5 Manrope; }.dish-notes textarea:focus { border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 15%,transparent); }
+.dish-order-quantity { display:flex;align-items:center;justify-content:space-between;margin-bottom:18px; }.dish-order-quantity>span { margin:0; }.dish-order-primary { min-height:55px; }.dish-order-secondary { display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px; }.dish-order-secondary .button { padding-inline:8px;font-size:8px; }.dish-order-secondary svg { width:15px; }.dish-order-secondary .active { color:var(--accent);border-color:var(--accent); }
+.dish-cart-shortcut { width:100%;display:flex;justify-content:space-between;align-items:center;border:0;border-top:1px solid var(--border);background:none;color:var(--text);margin-top:20px;padding:18px 0 0;font-size:9px;font-weight:700;cursor:pointer; }.dish-cart-shortcut svg { width:16px;color:var(--accent); }
+.dish-mobile-order { display:none; }
+
+@media (max-width:1100px) {
+  .category-more-links { grid-template-columns:repeat(3,1fr); }.category-more-links .category-more-all { grid-column:1/-1; }.category-more-links>a:nth-child(4) { border-inline-end:0; }
+  .menu-ledger-row { grid-template-columns:28px 105px minmax(220px,1fr) 90px; }.menu-row-actions { grid-column:3/-1;justify-self:end;width:280px; }.menu-row-price { align-self:start;margin-top:14px; }
+  .menu-buffet-row { grid-template-columns:210px 1fr; }.menu-buffet-order { grid-column:2;border-inline-start:0;border-top:1px solid color-mix(in srgb,var(--secondary-text) 22%,transparent);display:grid;grid-template-columns:1fr auto;align-items:center; }.menu-buffet-order .button { grid-column:2;grid-row:1/4;margin:0; }
+  .dish-detail-shell { grid-template-columns:minmax(0,1fr) 300px;gap:36px; }
+}
+
+@media (max-width:760px) {
+  .hero-cinematic .hero-photo,body.is-rtl .hero-cinematic .hero-photo { object-position:center;transform:none; }
+  .dish-card-actions { grid-template-columns:1fr; }.dish-card-actions .button { width:100%; }
+  .category-more-links { grid-template-columns:1fr 1fr;margin-top:32px; }.category-more-links .category-more-all { grid-column:1/-1;min-height:72px; }.category-more-links>a { min-height:90px;padding:14px; }.category-more-links>a:nth-child(3),.category-more-links>a:last-child { border-inline-end:0; }.category-more-links>a>span { font-size:17px; }
+  .menu-ledger-hero { padding:65px 0 50px; }.menu-ledger-intro { grid-template-columns:1fr;gap:23px; }.menu-ledger-intro h1 { font-size:59px; }.menu-ledger-intro>p { font-size:12px; }
+  .menu-ledger { padding-block:22px 125px; }.menu-ledger-tools { top:var(--header-height);display:block;padding:10px 0 13px; }.menu-ledger-tools .search-field { width:100%;margin-top:8px; }.menu-ledger-rule { margin-top:20px; }
+  .menu-buffet-row { grid-template-columns:1fr;padding:9px;gap:18px; }.menu-buffet-image { height:210px; }.menu-buffet-row>div:nth-child(2) { padding:0 10px; }.menu-buffet-row h2 { font-size:36px; }.menu-buffet-order { grid-column:auto;display:block;padding:18px 10px;border-top:1px solid color-mix(in srgb,var(--secondary-text) 22%,transparent); }.menu-buffet-order .button { margin-top:16px; }
+  .menu-ledger-row { grid-template-columns:76px 1fr auto;gap:12px;padding:16px 0; }.menu-ledger-row:hover { padding-inline:8px; }.menu-row-index { display:none; }.menu-row-image { height:76px; }.menu-row-copy h2 { font-size:21px;margin-top:5px; }.menu-row-copy p { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }.menu-row-price { grid-column:3;grid-row:1;margin:0;font-size:21px;align-self:start; }.menu-row-actions { grid-column:2/-1;grid-row:2;width:100%;justify-self:stretch; }.menu-row-actions .button { min-height:43px; }
+  .menu-ledger-cart { justify-content:space-between; }
+  .dish-image-hero { height:76svh;min-height:600px; }.dish-image-copy { bottom:8%; }.dish-image-copy h1 { font-size:clamp(55px,16vw,80px); }.dish-image-copy>p { font-size:12px; }
+  .dish-detail-shell { display:block;padding-block:70px 190px; }.dish-narrative-v2 { grid-template-columns:1fr;padding-bottom:70px; }.dish-narrative-v2 aside { grid-column:auto; }.dish-gallery-v2 { padding-bottom:70px; }.dish-gallery-v2>img { height:62svh; }.dish-facts-v2 { padding-block:65px; }.dish-film-section { padding-top:70px; }.dish-film-heading { grid-template-columns:1fr; }.dish-film-heading h2 { font-size:29px; }
+  .dish-order-rail { position:relative;top:auto;margin-top:70px; }.dish-order-card { padding:22px 17px; }.dish-mobile-order { position:fixed;z-index:82;inset-inline:8px;bottom:calc(84px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px;border:1px solid var(--border-strong);border-radius:18px;background:color-mix(in srgb,var(--surface-elevated) 92%,transparent);box-shadow:var(--shadow-lg);backdrop-filter:blur(18px); }.dish-mobile-order span,.dish-mobile-order strong { display:block;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }.dish-mobile-order span { font-size:8px; }.dish-mobile-order strong { color:var(--accent);font-size:13px; }.dish-mobile-order .button { min-height:45px;padding-inline:13px;font-size:8px; }
 }
