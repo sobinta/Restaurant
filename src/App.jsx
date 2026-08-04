@@ -30,6 +30,8 @@ const AccountPage = lazy(() => import('./pages/account/AccountPage'));
 const WorkspaceSelectorPage = lazy(() => import('./pages/workspace/WorkspaceSelectorPage'));
 const WorkspaceShell = lazy(() => import('./pages/workspace/WorkspaceShell'));
 const ForbiddenPage = lazy(() => import('./pages/workspace/ForbiddenPage'));
+const StaffAccessPage = lazy(() => import('./pages/workspace/StaffAccessPage'));
+const AcceptInvitationPage = lazy(() => import('./pages/auth/AcceptInvitationPage'));
 
 const IconArrow = ({ className = '' }) => {
   const { isRtl } = useTheme();
@@ -406,10 +408,12 @@ function MainContent() {
         <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        <Route path="/staff/invitations/accept" element={<ProtectedRoute><AcceptInvitationPage /></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
         <Route path="/account/profile" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
         <Route path="/workspaces" element={<ProtectedRoute><WorkspaceSelectorPage /></ProtectedRoute>} />
         <Route path="/workspace/:branchId/owner" element={<ProtectedRoute roles={['manager', 'superadmin']}><WorkspaceShell role="manager" /></ProtectedRoute>} />
+        <Route path="/workspace/:branchId/owner/staff" element={<ProtectedRoute roles={['manager', 'superadmin']}><StaffAccessPage /></ProtectedRoute>} />
         <Route path="/workspace/:branchId/waiter" element={<ProtectedRoute roles={['waiter', 'superadmin']}><WorkspaceShell role="waiter" /></ProtectedRoute>} />
         <Route path="/workspace/:branchId/kitchen" element={<ProtectedRoute roles={['kitchen', 'superadmin']}><WorkspaceShell role="kitchen" /></ProtectedRoute>} />
         <Route path="/workspace/:branchId/cashier" element={<ProtectedRoute roles={['cashier', 'superadmin']}><WorkspaceShell role="cashier" /></ProtectedRoute>} />
