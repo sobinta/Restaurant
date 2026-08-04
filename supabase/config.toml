@@ -34,8 +34,12 @@ file_size_limit = "50MiB"
 
 [auth]
 enabled = true
-site_url = "http://127.0.0.1:5173"
-additional_redirect_urls = ["http://localhost:5173/**", "http://127.0.0.1:5173/**"]
+site_url = "https://restaurant-pt8ywxd9e-sobinta-s-projects.vercel.app"
+additional_redirect_urls = [
+  "https://restaurant-pt8ywxd9e-sobinta-s-projects.vercel.app/**",
+  "http://localhost:43127/**",
+  "http://127.0.0.1:43127/**"
+]
 jwt_expiry = 3600
 enable_signup = true
 enable_anonymous_sign_ins = false
@@ -49,6 +53,10 @@ secure_password_change = true
 max_frequency = "1m"
 otp_length = 6
 otp_expiry = 3600
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
 
 [edge_runtime]
 enabled = true
