@@ -219,10 +219,11 @@ function BuffetSection() {
   const { lang } = useTheme();
   const { setIsReservationOpen, setReservationIntent } = useApp();
   const reserve = () => { setReservationIntent(`${localize(lunchBuffet.title, lang)} · ${localize(lunchBuffet.days, lang)} · ${lunchBuffet.time}`); setIsReservationOpen(true); };
-  return <section className="buffet-section" id="lunch-buffet"><div className="page-width buffet-stage">
-    <div className="buffet-time" aria-label={lunchBuffet.time}><span>11:30</span><i /><span>15:30</span></div>
-    <div className="buffet-copy"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.title, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><Link className="text-link" to="/menu?category=buffet">{localize(lunchBuffet.viewMenu, lang)}</Link></div></div>
-    <div className="buffet-prices"><span>{localize(lunchBuffet.days, lang)} · {lunchBuffet.time}</span><p><small>{localize(lunchBuffet.adultLabel, lang)}</small><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><small>{localize(lunchBuffet.childLabel, lang)}</small><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div>
+  return <section className="buffet-section" id="lunch-buffet"><div className="page-width">
+    <article className="buffet-feature-card">
+      <div className="buffet-feature-visual"><img src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=1500&q=90" width="1500" height="1100" loading="lazy" alt={localize(lunchBuffet.title, lang)} /><div className="buffet-feature-time" aria-label={lunchBuffet.time}><span>11:30</span><i /><span>15:30</span></div></div>
+      <div className="buffet-feature-content"><span className="eyebrow">{localize(lunchBuffet.eyebrow, lang)}</span><h2>{localize(lunchBuffet.title, lang)}</h2><p>{localize(lunchBuffet.description, lang)}</p><div className="buffet-feature-facts"><span className="buffet-feature-days"><CalendarDays />{localize(lunchBuffet.days, lang)}</span><p><small>{localize(lunchBuffet.adultLabel, lang)}</small><strong>{formatPrice(lunchBuffet.adultPrice, lang)}</strong></p><p><small>{localize(lunchBuffet.childLabel, lang)}</small><strong>{formatPrice(lunchBuffet.childPrice, lang)}</strong></p></div><div className="buffet-feature-actions"><button className="button button-primary" onClick={reserve}>{localize(lunchBuffet.reserve, lang)}<IconArrow /></button><Link className="text-link" to="/menu?category=buffet">{localize(lunchBuffet.viewMenu, lang)}</Link></div></div>
+    </article>
   </div></section>;
 }
 
