@@ -54,3 +54,18 @@ otp_expiry = 3600
 enabled = true
 policy = "per_worker"
 inspector_port = 8083
+
+[functions.invite-staff-member]
+verify_jwt = false
+
+[functions.accept-staff-invitation]
+verify_jwt = false
+
+[functions.update-member-roles]
+verify_jwt = false
+
+[functions.suspend-branch-member]
+verify_jwt = false
+
+[functions.register-push-subscription]
+verify_jwt = false

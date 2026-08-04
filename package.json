@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "admin:bootstrap": "node scripts/bootstrap-initial-admin.mjs"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.15.1",
